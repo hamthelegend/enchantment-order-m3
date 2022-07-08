@@ -347,5 +347,3 @@ enum class ItemType(
         ),
     ),
 }
-
-val targetableItemTypes = ItemType.values().toList() - ItemType.EnchantedBook

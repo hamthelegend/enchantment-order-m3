@@ -11,9 +11,3 @@ data class Item(
 ) {
     override fun toString() = "${type.friendlyName}: $enchantments"
 }
-
-fun ItemType.toNewItem(vararg enchantments: Enchantment) =
-    Item(type = this, enchantments = enchantments.toSet(), anvilUseCount = 0)
-
-fun new(itemType: ItemType, vararg enchantments: Enchantment) =
-    itemType.toNewItem(*enchantments)

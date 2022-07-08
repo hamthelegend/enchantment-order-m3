@@ -14,7 +14,3 @@ data class Enchantment(
     fun upgradeBy(level: Int) = upgradeTo(this.level + level)
     fun upgradeTo(level: Int) = Enchantment(type, level)
 }
-
-fun EnchantmentType.toMaxEnchantment() = Enchantment(this, maxLevel)
-
-fun max(enchantmentType: EnchantmentType) = enchantmentType.toMaxEnchantment()
