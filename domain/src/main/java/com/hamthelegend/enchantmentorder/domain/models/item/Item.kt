@@ -10,4 +10,18 @@ data class Item(
     val key: Double = Random.nextDouble(),
 ) {
     override fun toString() = "${type.friendlyName}: $enchantments"
+
+    override fun equals(other: Any?) = if (other is Item) {
+        type == other.type &&
+                enchantments == other.enchantments &&
+                anvilUseCount == other.anvilUseCount
+    } else false
+
+    override fun hashCode(): Int {
+        var result = type.hashCode()
+        result = 31 * result + enchantments.hashCode()
+        result = 31 * result + anvilUseCount
+        return result
+    }
+
 }

@@ -10,5 +10,22 @@ data class Combination(
     val cost: Int,
     val key: Double = Random.nextDouble(),
 ) {
+
     override fun toString() = "$target + $sacrifice = $product; Cost = $cost"
+
+    override fun equals(other: Any?) = if (other is Combination) {
+        target == other.target &&
+                sacrifice == other.sacrifice &&
+                product == other.product &&
+                cost == other.cost
+    } else false
+
+    override fun hashCode(): Int {
+        var result = target.hashCode()
+        result = 31 * result + sacrifice.hashCode()
+        result = 31 * result + product.hashCode()
+        result = 31 * result + cost
+        return result
+    }
+
 }
