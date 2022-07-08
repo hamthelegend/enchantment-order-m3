@@ -346,8 +346,6 @@ enum class ItemType(
             Unbreaking,
         ),
     ),
-    ;
-
 }
 
 val targetableItemTypes = ItemType.values().toList() - ItemType.EnchantedBook
