@@ -29,3 +29,6 @@ fun Int.costToAnvilUseCount() = (ln(this.toDouble() + 1) / ln(2.0)).toInt()
 fun Int.renameCostToAnvilUseCount() = (this - 1).costToAnvilUseCount()
 
 fun Int.isCostTooExpensive() = this >= 40
+
+fun enchantedBook(vararg enchantments: Enchantment) =
+    Item(ItemType.EnchantedBook, enchantments.toSet())

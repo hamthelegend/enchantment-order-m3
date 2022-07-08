@@ -15,7 +15,7 @@ fun getBestOrder(
     target: Item,
     enchantments: List<Enchantment>
 ): CombinationOrder {
-    val items = enchantments.map { enchantment -> Item(ItemType.EnchantedBook, setOf(enchantment)) }
+    val items = enchantments.map { enchantment -> enchantedBook(enchantment) }
     return getBestOrder(target, items)
 }
 
