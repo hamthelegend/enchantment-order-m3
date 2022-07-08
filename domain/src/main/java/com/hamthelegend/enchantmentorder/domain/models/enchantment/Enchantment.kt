@@ -1,4 +1,4 @@
-package com.hamthelegend.enchantmentorder.domain.model.enchantment
+package com.hamthelegend.enchantmentorder.domain.models.enchantment
 
 import com.hamthelegend.enchantmentorder.extensions.toRomanNumerals
 import kotlin.random.Random

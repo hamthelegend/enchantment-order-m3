@@ -1,7 +1,7 @@
-package com.hamthelegend.enchantmentorder.domain.model.item
+package com.hamthelegend.enchantmentorder.domain.models.item
 
-import com.hamthelegend.enchantmentorder.domain.model.enchantment.EnchantmentType
-import com.hamthelegend.enchantmentorder.domain.model.enchantment.EnchantmentType.*
+import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
+import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType.*
 
 enum class ItemType(
     val friendlyName: String,

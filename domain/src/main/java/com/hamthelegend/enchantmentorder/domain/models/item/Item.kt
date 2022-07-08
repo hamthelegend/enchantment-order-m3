@@ -1,6 +1,6 @@
-package com.hamthelegend.enchantmentorder.domain.model.item
+package com.hamthelegend.enchantmentorder.domain.models.item
 
-import com.hamthelegend.enchantmentorder.domain.model.enchantment.Enchantment
+import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import kotlin.random.Random
 
 data class Item(

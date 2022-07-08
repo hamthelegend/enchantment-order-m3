@@ -1,4 +1,4 @@
-package com.hamthelegend.enchantmentorder.domain.model.combination
+package com.hamthelegend.enchantmentorder.domain.models.combination
 
 data class CombinationOrder(
     val combinations: List<Combination>,
