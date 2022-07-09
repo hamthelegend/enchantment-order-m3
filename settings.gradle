@@ -16,3 +16,4 @@ rootProject.name = "Enchantment Order"
 include ':app'
 include ':domain'
 include ':extensions'
+include ':composables'
