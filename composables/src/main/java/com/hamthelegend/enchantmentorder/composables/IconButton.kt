@@ -1,9 +1,12 @@
 package com.hamthelegend.enchantmentorder.composables
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun IconButton(
@@ -17,4 +20,14 @@ fun IconButton(
             contentDescription = contentDescription,
         )
     }
+}
+
+@Preview
+@Composable
+fun IconButtonPreview() {
+    IconButton(
+        imageVector = Icons.Default.AccountCircle,
+        contentDescription = "Hello",
+        onClick = {},
+    )
 }

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Enchantment Order</string>
+
+    <string name="back">Back</string>
+    <string name="search">Search</string>
+    <string name="stop_searching">Stop searching</string>
+    <string name="clear_search">Clear search query</string>
 </resources>
