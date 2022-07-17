@@ -21,7 +21,7 @@ import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.IconButton
 import com.hamthelegend.enchantmentorder.composables.Updatable
-import com.hamthelegend.enchantmentorder.composables.rememberMutableState
+import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 
 @Composable
 fun TopBar(
@@ -38,7 +38,7 @@ fun TopBar(
         },
         animationSpec = tween(durationMillis = 50)
     )
-    var searching by rememberMutableState(value = false)
+    var searching by rememberMutableStateOf(value = false)
     val color by smallTopAppBarColors().containerColor(scrollFraction = scrollFraction)
 
     Surface(
@@ -86,8 +86,8 @@ fun TopBar(
 @Composable
 fun TopBarPreview() {
     EnchantmentOrderTheme {
-        var searchQuery by rememberMutableState(value = "")
-        var scrolled by rememberMutableState(value = false)
+        var searchQuery by rememberMutableStateOf(value = "")
+        var scrolled by rememberMutableStateOf(value = false)
         TopBar(
             title = "Enchantment Order",
             navigateUp = { scrolled = !scrolled },
