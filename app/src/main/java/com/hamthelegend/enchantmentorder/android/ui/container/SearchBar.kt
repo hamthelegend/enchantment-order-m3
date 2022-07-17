@@ -15,11 +15,11 @@ import androidx.compose.ui.res.stringResource
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.IconButton
+import com.hamthelegend.enchantmentorder.composables.Updatable
 
 @Composable
 fun SearchBar(
-    searchQuery: String,
-    onSearchQueryChange: (newQuery: String) -> Unit,
+    searchUpdatable: Updatable<String>,
     onStopSearching: () -> Unit,
     modifier: Modifier = Modifier,
     visible: Boolean = true,
@@ -27,8 +27,8 @@ fun SearchBar(
     val focusRequester = remember { FocusRequester() }
 
     OutlinedTextField(
-        value = searchQuery,
-        onValueChange = onSearchQueryChange,
+        value = searchUpdatable.value,
+        onValueChange = searchUpdatable.onValueChange,
         modifier = modifier
             .fillMaxWidth()
             .focusRequester(focusRequester),
@@ -44,16 +44,16 @@ fun SearchBar(
                 contentDescription = stringResource(id = R.string.stop_searching),
                 onClick = {
                     onStopSearching()
-                    onSearchQueryChange("")
+                    searchUpdatable.onValueChange("")
                 },
             )
         },
         trailingIcon = {
-            if (searchQuery.isNotEmpty()) {
+            if (searchUpdatable.value.isNotEmpty()) {
                 IconButton(
                     imageVector = ThemeIcons.Clear,
                     contentDescription = stringResource(id = R.string.clear_search),
-                    onClick = { onSearchQueryChange("") },
+                    onClick = { searchUpdatable.onValueChange("") },
                 )
             }
         },
