@@ -1,5 +1,8 @@
 package com.hamthelegend.enchantmentorder.domain.models.combination
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CombinationOrder(
     val combinations: List<Combination>,
     val name: String = combinations.last().target.type.friendlyName,

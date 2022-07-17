@@ -19,3 +19,20 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.SerializationKt
+-keep,includedescriptorclasses class com.hamthelegend.enchantmentorder.android.**$$serializer { *; } # <-- change package name to your app's
+-keepclassmembers class com.hamthelegend.enchantmentorder.android.** { # <-- change package name to your app's
+    *** Companion;
+}
+-keepclasseswithmembers class com.hamthelegend.enchantmentorder.android.** { # <-- change package name to your app's
+    kotlinx.serialization.KSerializer serializer(...);
+}
+-keep,includedescriptorclasses class com.hamthelegend.enchantmentorder.domain.**$$serializer { *; } # <-- change package name to your app's
+-keepclassmembers class com.hamthelegend.enchantmentorder.domain.** { # <-- change package name to your app's
+    *** Companion;
+}
+-keepclasseswithmembers class com.hamthelegend.enchantmentorder.domain.** { # <-- change package name to your app's
+    kotlinx.serialization.KSerializer serializer(...);
+}

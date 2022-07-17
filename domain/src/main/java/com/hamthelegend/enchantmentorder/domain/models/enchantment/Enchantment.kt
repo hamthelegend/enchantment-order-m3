@@ -1,8 +1,10 @@
 package com.hamthelegend.enchantmentorder.domain.models.enchantment
 
 import com.hamthelegend.enchantmentorder.extensions.toRomanNumerals
+import kotlinx.serialization.Serializable
 import kotlin.random.Random
 
+@Serializable
 data class Enchantment(
     val type: EnchantmentType,
     val level: Int = 1,

@@ -1,8 +1,10 @@
 package com.hamthelegend.enchantmentorder.domain.models.item
 
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
+import kotlinx.serialization.Serializable
 import kotlin.random.Random
 
+@Serializable
 data class Item(
     val type: ItemType,
     val enchantments: Set<Enchantment> = emptySet(),

@@ -1,8 +1,10 @@
 package com.hamthelegend.enchantmentorder.domain.models.combination
 
 import com.hamthelegend.enchantmentorder.domain.models.item.Item
+import kotlinx.serialization.Serializable
 import kotlin.random.Random
 
+@Serializable
 data class Combination(
     val target: Item,
     val sacrifice: Item,
