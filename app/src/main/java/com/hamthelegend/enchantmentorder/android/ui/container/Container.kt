@@ -12,6 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.composables.Updatable
+import com.hamthelegend.enchantmentorder.composables.rememberDerivedStateOf
+import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,12 +51,12 @@ fun Container(
 fun ContainerPreview() {
     EnchantmentOrderTheme {
 
+        var searchQuery by rememberMutableStateOf(value = "")
+
         val lazyListState = rememberLazyListState()
-        val scrolled by remember {
-            derivedStateOf {
-                lazyListState.firstVisibleItemIndex != 0 ||
-                        lazyListState.firstVisibleItemScrollOffset != 0
-            }
+        val scrolled by rememberDerivedStateOf {
+            lazyListState.firstVisibleItemIndex != 0 ||
+                    lazyListState.firstVisibleItemScrollOffset != 0
         }
         val scrollScope = rememberCoroutineScope()
 
@@ -65,7 +67,7 @@ fun ContainerPreview() {
                     lazyListState.animateScrollToItem(0, 0)
                 }
             },
-            searchUpdatable = Updatable("") {},
+            searchUpdatable = Updatable(searchQuery) { searchQuery = it },
             scrolled = scrolled,
         ) {
             LazyColumn(
