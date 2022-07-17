@@ -1,6 +1,8 @@
 package com.hamthelegend.enchantmentorder.android.ui.container
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.twotone.ArrowBack
@@ -18,6 +20,7 @@ import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.IconButton
+import com.hamthelegend.enchantmentorder.composables.Updatable
 import com.hamthelegend.enchantmentorder.composables.rememberMutableState
 
 @Composable
@@ -25,10 +28,16 @@ fun TopBar(
     title: String,
     modifier: Modifier = Modifier,
     navigateUp: (() -> Unit)? = null,
-    searchQuery: String = "",
-    onSearchQueryChange: ((newQuery: String) -> Unit)? = null,
-    scrollFraction: Float = 0f,
+    searchUpdatable: Updatable<String>? = null,
+    scrolled: Boolean = false,
 ) {
+    val scrollFraction by animateFloatAsState(
+        targetValue = when (scrolled) {
+            true -> 1f
+            false -> 0f
+        },
+        animationSpec = tween(durationMillis = 50)
+    )
     var searching by rememberMutableState(value = false)
     val color by smallTopAppBarColors().containerColor(scrollFraction = scrollFraction)
 
@@ -50,7 +59,7 @@ fun TopBar(
                         }
                     },
                     actions = {
-                        if (onSearchQueryChange != null) {
+                        if (searchUpdatable != null) {
                             IconButton(
                                 imageVector = ThemeIcons.Search,
                                 contentDescription = stringResource(id = R.string.search),
@@ -64,9 +73,8 @@ fun TopBar(
                 )
             }
             SearchBar(
-                visible = onSearchQueryChange != null,
-                searchQuery = searchQuery,
-                onSearchQueryChange = onSearchQueryChange!!,
+                visible = searching,
+                searchUpdatable = searchUpdatable ?: Updatable("") {},
                 onStopSearching = { searching = false },
                 modifier = Modifier.padding(4.dp)
             )
@@ -79,15 +87,12 @@ fun TopBar(
 fun TopBarPreview() {
     EnchantmentOrderTheme {
         var searchQuery by rememberMutableState(value = "")
-        var scrollFraction by rememberMutableState(value = 0f)
+        var scrolled by rememberMutableState(value = false)
         TopBar(
             title = "Enchantment Order",
-            navigateUp = {
-                scrollFraction = if (scrollFraction == 0f) 1f else 0f
-            },
-            searchQuery = searchQuery,
-            onSearchQueryChange = { newQuery -> searchQuery = newQuery },
-            scrollFraction = scrollFraction,
+            navigateUp = { scrolled = !scrolled },
+            searchUpdatable = Updatable(searchQuery) { searchQuery = it },
+            scrolled = scrolled,
         )
     }
 }
