@@ -22,7 +22,7 @@ fun SearchBar(
     searchUpdatable: Updatable<String>,
     onStopSearching: () -> Unit,
     modifier: Modifier = Modifier,
-    visible: Boolean = true,
+    shouldBeInFocus: Boolean = true,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -45,6 +45,7 @@ fun SearchBar(
                 onClick = {
                     onStopSearching()
                     searchUpdatable.onValueChange("")
+                    focusRequester.freeFocus()
                 },
             )
         },
@@ -60,7 +61,7 @@ fun SearchBar(
         singleLine = true,
     )
 
-    LaunchedEffect(visible) {
-        if (visible) focusRequester.requestFocus()
+    LaunchedEffect(shouldBeInFocus) {
+        if (shouldBeInFocus) focusRequester.requestFocus()
     }
 }

@@ -3,6 +3,8 @@ package com.hamthelegend.enchantmentorder.android.ui.container
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.twotone.ArrowBack
@@ -72,12 +74,18 @@ fun TopBar(
                     )
                 )
             }
-            SearchBar(
+            AnimatedVisibility(
                 visible = searching,
-                searchUpdatable = searchUpdatable ?: Updatable("") {},
-                onStopSearching = { searching = false },
-                modifier = Modifier.padding(4.dp)
-            )
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                SearchBar(
+                    shouldBeInFocus = searching,
+                    searchUpdatable = searchUpdatable ?: Updatable("") {},
+                    onStopSearching = { searching = false },
+                    modifier = Modifier.padding(4.dp)
+                )
+            }
         }
     }
 }
