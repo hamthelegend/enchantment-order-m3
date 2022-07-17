@@ -48,7 +48,7 @@ fun Container(
 
 @Preview
 @Composable
-fun ContainerPreview() {
+fun ContainerWithTopBarPreview() {
     EnchantmentOrderTheme {
 
         var searchQuery by rememberMutableStateOf(value = "")
@@ -85,3 +85,39 @@ fun ContainerPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Container(
+    modifier: Modifier = Modifier,
+    floatingActionButton: @Composable () -> Unit = {},
+    content: @Composable () -> Unit,
+) {
+    Scaffold(
+        modifier = modifier,
+        floatingActionButton = floatingActionButton,
+    ) { paddingValues ->
+        Surface(
+            modifier = Modifier.padding(paddingValues),
+            content = content,
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ContainerWithoutTopBarPreview() {
+    EnchantmentOrderTheme {
+
+        Container {
+            LazyColumn(modifier = Modifier.fillMaxSize(), ) {
+                items((1..100).toList()) { item ->
+                    Text(
+                        text = item.toString(),
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+        }
+    }
+
+}
