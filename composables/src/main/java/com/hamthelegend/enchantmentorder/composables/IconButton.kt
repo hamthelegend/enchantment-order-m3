@@ -10,9 +10,9 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun IconButton(
+    onClick: () -> Unit,
     imageVector: ImageVector,
     contentDescription: String?,
-    onClick: () -> Unit,
 ) {
     IconButton(onClick = onClick) {
         Icon(
