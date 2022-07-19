@@ -52,6 +52,13 @@ android {
             freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
         }
     }
+    applicationVariants.all { variant ->
+        kotlin.sourceSets {
+            getByName(variant.name) {
+                kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
+            }
+        }
+    }
 }
 
 dependencies {
