@@ -1,4 +1,4 @@
-package com.hamthelegend.enchantmentorder.android.ui.container
+package com.hamthelegend.enchantmentorder.android.ui.screen
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.twotone.ArrowBack

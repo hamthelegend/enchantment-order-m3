@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hamthelegend.enchantmentorder.android.R
-import com.hamthelegend.enchantmentorder.android.ui.container.Container
+import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.composables.Button
 import com.hamthelegend.enchantmentorder.composables.Spacer
@@ -24,13 +24,13 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 @RootNavGraph(start = true)
 @Destination
 @Composable
-fun HomeScreenDestination() {
-    HomeScreen()
+fun HomeScreen() {
+    Home()
 }
 
 @Composable
-fun HomeScreen() {
-    Container {
+fun Home() {
+    Screen {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -73,6 +73,6 @@ fun HomeScreen() {
 @Composable
 fun HomeScreenPreview() {
     EnchantmentOrderTheme {
-        HomeScreen()
+        Home()
     }
 }

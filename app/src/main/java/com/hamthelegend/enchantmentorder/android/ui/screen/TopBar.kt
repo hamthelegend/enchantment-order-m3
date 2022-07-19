@@ -1,4 +1,4 @@
-package com.hamthelegend.enchantmentorder.android.ui.container
+package com.hamthelegend.enchantmentorder.android.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState

@@ -1,4 +1,4 @@
-package com.hamthelegend.enchantmentorder.android.ui.container
+package com.hamthelegend.enchantmentorder.android.ui.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Container(
+fun Screen(
     title: String,
     modifier: Modifier = Modifier,
     navigateUp: (() -> Unit)? = null,
@@ -48,7 +48,7 @@ fun Container(
 
 @Preview
 @Composable
-fun ContainerWithTopBarPreview() {
+fun ScreenWithTopBarPreview() {
     EnchantmentOrderTheme {
 
         var searchQuery by rememberMutableStateOf(value = "")
@@ -60,7 +60,7 @@ fun ContainerWithTopBarPreview() {
         }
         val scrollScope = rememberCoroutineScope()
 
-        Container(
+        Screen(
             title = "Enchantment Order",
             navigateUp = {
                 scrollScope.launch {
@@ -87,7 +87,7 @@ fun ContainerWithTopBarPreview() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Container(
+fun Screen(
     modifier: Modifier = Modifier,
     floatingActionButton: @Composable () -> Unit = {},
     content: @Composable () -> Unit,
@@ -105,10 +105,10 @@ fun Container(
 
 @Preview
 @Composable
-fun ContainerWithoutTopBarPreview() {
+fun ScreenWithoutAppBarPreview() {
     EnchantmentOrderTheme {
 
-        Container {
+        Screen {
             LazyColumn(modifier = Modifier.fillMaxSize(), ) {
                 items((1..100).toList()) { item ->
                     Text(
