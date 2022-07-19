@@ -5,4 +5,8 @@
     <string name="search">Search</string>
     <string name="stop_searching">Stop searching</string>
     <string name="clear_search">Clear search query</string>
+    <string name="logo">Logo</string>
+    <string name="app_description">See the best way to enchant your item with an anvil</string>
+    <string name="start_enchanting">Start Enchanting</string>
+    <string name="saved_enchantments">Saved Enchantments</string>
 </resources>
