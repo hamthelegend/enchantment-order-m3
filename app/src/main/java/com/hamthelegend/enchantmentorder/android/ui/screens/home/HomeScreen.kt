@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hamthelegend.enchantmentorder.android.R
+import com.hamthelegend.enchantmentorder.android.ui.container.Container
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.composables.Button
 import com.hamthelegend.enchantmentorder.composables.Spacer
@@ -29,36 +30,42 @@ fun HomeScreenDestination() {
 
 @Composable
 fun HomeScreen() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = stringResource(R.string.logo),
-            modifier = Modifier.size(80.dp),
-        )
-        Spacer(height = 16.dp)
-        Text(
-            text = stringResource(id = R.string.app_name),
-            style = MaterialTheme.typography.titleLarge,
-        )
-        Spacer(height = 16.dp)
-        Text(
-            text = stringResource(R.string.app_description),
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(height = 16.dp)
-        Button(
-            onClick = { /*TODO*/ },
-            text = stringResource(R.string.start_enchanting),
-            modifier = Modifier.fillMaxWidth(),
-        )
-        TextButton(onClick = { /*TODO*/ }, text = stringResource(R.string.saved_enchantments))
+    Container {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = stringResource(R.string.logo),
+                modifier = Modifier.size(80.dp),
+            )
+            Spacer(height = 16.dp)
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.titleLarge,
+            )
+            Spacer(height = 16.dp)
+            Text(
+                text = stringResource(R.string.app_description),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(height = 16.dp)
+            Button(
+                onClick = { /*TODO*/ },
+                text = stringResource(R.string.start_enchanting),
+                modifier = Modifier.fillMaxWidth(),
+            )
+            TextButton(
+                onClick = { /*TODO*/ },
+                text = stringResource(R.string.saved_enchantments),
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }
 

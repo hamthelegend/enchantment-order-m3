@@ -1,7 +1,6 @@
 package com.hamthelegend.enchantmentorder.android.ui.container
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -28,13 +27,14 @@ fun Container(
     content: @Composable () -> Unit,
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.navigationBarsPadding(),
         topBar = {
             TopBar(
                 title = title,
                 navigateUp = navigateUp,
                 searchUpdatable = searchUpdatable,
                 scrolled = scrolled,
+                modifier = Modifier.statusBarsPadding(),
             )
         },
         floatingActionButton = floatingActionButton,
@@ -93,7 +93,7 @@ fun Container(
     content: @Composable () -> Unit,
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.systemBarsPadding(),
         floatingActionButton = floatingActionButton,
     ) { paddingValues ->
         Surface(
