@@ -18,7 +18,9 @@ import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.hamthelegend.enchantmentorder.android.ui.screens.navhost.NavHost
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

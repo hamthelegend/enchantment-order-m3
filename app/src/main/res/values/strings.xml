@@ -9,4 +9,8 @@
     <string name="app_description">See the best way to enchant your item with an anvil</string>
     <string name="start_enchanting">Start Enchanting</string>
     <string name="saved_enchantments">Saved Enchantments</string>
+    <string name="choose_edition">Choose your edition</string>
+    <string name="java_edition">Java Edition</string>
+    <string name="bedrock_edition">Bedrock Edition</string>
+    <string name="choose_target">Choose your target</string>
 </resources>
