@@ -1,11 +1,12 @@
 package com.hamthelegend.enchantmentorder.android.ui.res
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
 
-val ItemType.resId: Int
-    get() = when (this) {
+val ItemType.resId
+    get(): @DrawableRes Int = when (this) {
         ItemType.EnchantedBook -> R.drawable.book_enchanted
         ItemType.Helmet -> R.drawable.helmet
         ItemType.Chestplate -> R.drawable.chestplate

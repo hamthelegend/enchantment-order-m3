@@ -75,12 +75,11 @@ fun ImageTextCard(
             bottomStart = CornerSize(bottomCornerRadius),
             bottomEnd = CornerSize(bottomCornerRadius),
         ),
+        onClick = { if (onClick != null) onClick() }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .run { if (onClick != null) clickable { onClick() } else this }
-                .padding(16.dp),
+            modifier = Modifier.padding(16.dp),
         ) {
             Image(
                 painter = painterResource(id = painterResourceId),
@@ -90,7 +89,7 @@ fun ImageTextCard(
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleSmall,
             )
         }
     }
@@ -146,7 +145,7 @@ fun ImageTextCard(
             bottomStart = CornerSize(bottomCornerRadius),
             bottomEnd = CornerSize(bottomCornerRadius),
         ),
-        onClick = { if (onClick != null) { onClick() } },
+        onClick = { if (onClick != null) onClick() },
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -160,7 +159,7 @@ fun ImageTextCard(
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleMedium,
             )
         }
     }

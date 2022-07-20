@@ -13,6 +13,7 @@ import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseTargetScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
+import com.hamthelegend.enchantmentorder.composables.FullScreenLazyColumn
 import com.hamthelegend.enchantmentorder.composables.ImageTextCard
 import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.ramcosta.composedestinations.annotation.Destination
@@ -38,19 +39,23 @@ fun ChooseEdition(
         title = stringResource(R.string.choose_edition),
         navigateUp = navigateUp,
     ) {
-        Column {
-            ImageTextCard(
-                imageVector = ThemeIcons.DesktopWindows,
-                text = stringResource(R.string.java_edition),
-                onClick = { chooseTarget(Edition.Java) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-            ImageTextCard(
-                imageVector = ThemeIcons.Devices,
-                text = stringResource(R.string.bedrock_edition),
-                onClick = { chooseTarget(Edition.Bedrock) },
-                modifier = Modifier.fillMaxWidth(),
-            )
+        FullScreenLazyColumn {
+            item {
+                ImageTextCard(
+                    imageVector = ThemeIcons.DesktopWindows,
+                    text = stringResource(R.string.java_edition),
+                    onClick = { chooseTarget(Edition.Java) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+            item {
+                ImageTextCard(
+                    imageVector = ThemeIcons.Devices,
+                    text = stringResource(R.string.bedrock_edition),
+                    onClick = { chooseTarget(Edition.Bedrock) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
         }
     }
 }
