@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.*
@@ -47,7 +48,10 @@ fun TopBar(
         color = color,
         modifier = modifier
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.statusBarsPadding(),
+        ) {
             AnimatedVisibility(visible = !searching) {
                 SmallTopAppBar(
                     title = { Text(title) },

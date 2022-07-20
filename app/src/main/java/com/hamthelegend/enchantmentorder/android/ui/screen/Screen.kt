@@ -27,14 +27,13 @@ fun Screen(
     content: @Composable () -> Unit,
 ) {
     Scaffold(
-        modifier = modifier.navigationBarsPadding(),
+        modifier = modifier,
         topBar = {
             TopBar(
                 title = title,
                 navigateUp = navigateUp,
                 searchUpdatable = searchUpdatable,
                 scrolled = scrolled,
-                modifier = Modifier.statusBarsPadding(),
             )
         },
         floatingActionButton = floatingActionButton,
