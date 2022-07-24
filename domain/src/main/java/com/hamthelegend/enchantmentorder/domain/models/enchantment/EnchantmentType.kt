@@ -11,6 +11,8 @@ enum class EnchantmentType(
     val javaBookMultiplier: Int,
     val bedrockItemMultiplier: Int = javaItemMultiplier,
     val bedrockBookMultiplier: Int = javaBookMultiplier,
+    val inJava: Boolean = true,
+    val inBedrock: Boolean = false,
 ) {
 
     AquaAffinity(
@@ -266,6 +268,7 @@ enum class EnchantmentType(
         maxLevel = 3,
         javaItemMultiplier = 4,
         javaBookMultiplier = 2,
+        inBedrock = false,
     ),
     SwiftSneak(
         friendlyName = "Swift Sneak",

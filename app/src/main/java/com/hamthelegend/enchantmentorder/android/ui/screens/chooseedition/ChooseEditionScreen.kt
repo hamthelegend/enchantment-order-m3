@@ -1,6 +1,5 @@
 package com.hamthelegend.enchantmentorder.android.ui.screens.chooseedition
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.twotone.DesktopWindows
 import androidx.compose.material.icons.twotone.Devices
@@ -24,7 +23,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun ChooseEditionScreen(navigator: DestinationsNavigator) {
     ChooseEdition(
         navigateUp = navigator::navigateUp,
-        chooseTarget = { editionPicked ->
+        navigateToChooseTargetScreen = { editionPicked ->
             navigator.navigate(ChooseTargetScreenDestination(editionPicked))
         }
     )
@@ -33,7 +32,7 @@ fun ChooseEditionScreen(navigator: DestinationsNavigator) {
 @Composable
 fun ChooseEdition(
     navigateUp: () -> Unit,
-    chooseTarget: (editionPicked: Edition) -> Unit,
+    navigateToChooseTargetScreen: (editionPicked: Edition) -> Unit,
 ) {
     Screen(
         title = stringResource(R.string.choose_edition),
@@ -44,7 +43,7 @@ fun ChooseEdition(
                 ImageTextCard(
                     imageVector = ThemeIcons.DesktopWindows,
                     text = stringResource(R.string.java_edition),
-                    onClick = { chooseTarget(Edition.Java) },
+                    onClick = { navigateToChooseTargetScreen(Edition.Java) },
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -52,7 +51,7 @@ fun ChooseEdition(
                 ImageTextCard(
                     imageVector = ThemeIcons.Devices,
                     text = stringResource(R.string.bedrock_edition),
-                    onClick = { chooseTarget(Edition.Bedrock) },
+                    onClick = { navigateToChooseTargetScreen(Edition.Bedrock) },
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -66,7 +65,7 @@ fun ChooseEditionPreview() {
     EnchantmentOrderTheme {
         ChooseEdition(
             navigateUp = {},
-            chooseTarget = {},
+            navigateToChooseTargetScreen = {},
         )
     }
 }

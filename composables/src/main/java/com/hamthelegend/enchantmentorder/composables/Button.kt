@@ -4,6 +4,25 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun ElevatedButton(
+    onClick: () -> Unit,
+    text: String,
+    modifier: Modifier = Modifier,
+    iconImageVector: ImageVector? = null,
+) {
+    ElevatedButton(
+        onClick = onClick,
+        modifier = modifier,
+    ) {
+        if (iconImageVector != null) {
+            Icon(imageVector = iconImageVector, contentDescription = text)
+        }
+        Text(text = text)
+    }
+}
 
 @Composable
 fun Button(
@@ -24,18 +43,37 @@ fun Button(
 }
 
 @Composable
-fun ElevatedButton(
+fun FilledTonalButton(
     onClick: () -> Unit,
     text: String,
     modifier: Modifier = Modifier,
     iconImageVector: ImageVector? = null,
 ) {
-    ElevatedButton(
+    FilledTonalButton(
         onClick = onClick,
         modifier = modifier,
     ) {
         if (iconImageVector != null) {
             Icon(imageVector = iconImageVector, contentDescription = text)
+        }
+        Text(text = text)
+    }
+}
+
+@Composable
+fun OutlinedButton(
+    onClick: () -> Unit,
+    text: String,
+    modifier: Modifier = Modifier,
+    iconImageVector: ImageVector? = null,
+) {
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier,
+    ) {
+        if (iconImageVector != null) {
+            Icon(imageVector = iconImageVector, contentDescription = text)
+            HorizontalSpacer(width = 8.dp)
         }
         Text(text = text)
     }

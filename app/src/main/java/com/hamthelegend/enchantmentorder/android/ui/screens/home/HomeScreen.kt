@@ -17,8 +17,8 @@ import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseEditionScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.composables.Button
-import com.hamthelegend.enchantmentorder.composables.Spacer
 import com.hamthelegend.enchantmentorder.composables.TextButton
+import com.hamthelegend.enchantmentorder.composables.VerticalSpacer
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -30,15 +30,15 @@ fun HomeScreen(
     navigator: DestinationsNavigator,
 ) {
     Home(
-        startEnchanting = { navigator.navigate(ChooseEditionScreenDestination) },
-        openSavedEnchantments = {},
+        navigateToChooseEditionScreen = { navigator.navigate(ChooseEditionScreenDestination) },
+        navigateToSavedEnchantmentsScreen = {},
     )
 }
 
 @Composable
 fun Home(
-    startEnchanting: () -> Unit,
-    openSavedEnchantments: () -> Unit,
+    navigateToChooseEditionScreen: () -> Unit,
+    navigateToSavedEnchantmentsScreen: () -> Unit,
 ) {
     Screen {
         Column(
@@ -53,20 +53,20 @@ fun Home(
                 contentDescription = stringResource(R.string.logo),
                 modifier = Modifier.size(80.dp),
             )
-            Spacer(height = 16.dp)
+            VerticalSpacer(height = 16.dp)
             Text(
                 text = stringResource(id = R.string.app_name),
                 style = MaterialTheme.typography.displaySmall,
                 textAlign = TextAlign.Center,
             )
-            Spacer(height = 16.dp)
+            VerticalSpacer(height = 16.dp)
             Button(
-                onClick = startEnchanting,
+                onClick = navigateToChooseEditionScreen,
                 text = stringResource(R.string.start_enchanting),
                 modifier = Modifier.fillMaxWidth(),
             )
             TextButton(
-                onClick = openSavedEnchantments,
+                onClick = navigateToSavedEnchantmentsScreen,
                 text = stringResource(R.string.saved_enchantments),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -79,8 +79,8 @@ fun Home(
 fun HomeScreenPreview() {
     EnchantmentOrderTheme {
         Home(
-            startEnchanting = {},
-            openSavedEnchantments = {},
+            navigateToChooseEditionScreen = {},
+            navigateToSavedEnchantmentsScreen = {},
         )
     }
 }

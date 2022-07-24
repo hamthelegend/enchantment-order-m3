@@ -2,10 +2,8 @@ package com.hamthelegend.enchantmentorder.android.ui.screens.choosetarget
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -14,9 +12,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
-import com.hamthelegend.enchantmentorder.android.ui.res.resId
+import com.hamthelegend.enchantmentorder.android.ui.res.imageResId
 import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
-import com.hamthelegend.enchantmentorder.android.ui.screens.chooseedition.ChooseEdition
+import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddInitialEnchantmentsScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.composables.*
 import com.hamthelegend.enchantmentorder.domain.businesslogic.targetableItemTypes
@@ -34,8 +32,15 @@ fun ChooseTargetScreen(
     ChooseTarget(
         navigateUp = navigator::navigateUp,
         searchUpdatable = Updatable(viewModel.searchQuery, viewModel::onSearchQueryChange),
-        availableTargets = viewModel.availableTargets,
-        addInitialEnchantments = { /*TODO */ }
+        targets = viewModel.targets,
+        navigateToAddInitialEnchantmentsScreen = { target ->
+            navigator.navigate(
+                AddInitialEnchantmentsScreenDestination(
+                    edition = viewModel.edition,
+                    target = target,
+                )
+            )
+        }
     )
 
 }
@@ -44,8 +49,8 @@ fun ChooseTargetScreen(
 fun ChooseTarget(
     navigateUp: () -> Unit,
     searchUpdatable: Updatable<String>,
-    availableTargets: List<ItemType>,
-    addInitialEnchantments: (target: ItemType) -> Unit,
+    targets: List<ItemType>,
+    navigateToAddInitialEnchantmentsScreen: (target: ItemType) -> Unit,
 ) {
     val lazyColumnState = rememberLazyListState()
     val scrolled by rememberDerivedStateOf {
@@ -64,12 +69,13 @@ fun ChooseTarget(
             modifier = Modifier.fillMaxSize(),
         ) {
             items(
-                items = availableTargets,
+                items = targets,
                 key = { itemType -> itemType.friendlyName },
             ) { itemType ->
-                ImageTextCard(painterResourceId = itemType.resId,
+                ImageTextCard(
+                    painterResourceId = itemType.imageResId,
                     text = itemType.friendlyName,
-                    onClick = { addInitialEnchantments(itemType) },
+                    onClick = { navigateToAddInitialEnchantmentsScreen(itemType) },
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -83,12 +89,14 @@ fun ChooseTargetPreview() {
     EnchantmentOrderTheme {
 
         var searchQuery by rememberMutableStateOf(value = "")
-        val availableTargets = targetableItemTypes.filter { searchQuery in it.friendlyName }
+        val targets = targetableItemTypes.filter { searchQuery in it.friendlyName }
 
-        ChooseTarget(navigateUp = {},
+        ChooseTarget(
+            navigateUp = {},
             searchUpdatable = Updatable(searchQuery) { searchQuery = it },
-            availableTargets = availableTargets,
-            addInitialEnchantments = {},)
+            targets = targets,
+            navigateToAddInitialEnchantmentsScreen = {},
+        )
 
     }
 }

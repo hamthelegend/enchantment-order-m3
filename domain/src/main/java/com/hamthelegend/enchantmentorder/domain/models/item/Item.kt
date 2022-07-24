@@ -7,7 +7,7 @@ import kotlin.random.Random
 @Serializable
 data class Item(
     val type: ItemType,
-    val enchantments: Set<Enchantment> = emptySet(),
+    val enchantments: List<Enchantment> = emptyList(),
     val anvilUseCount: Int = 0,
     val key: Double = Random.nextDouble(),
 ) {

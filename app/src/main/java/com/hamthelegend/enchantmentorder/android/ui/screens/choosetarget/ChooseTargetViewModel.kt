@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.navArgs
 import com.hamthelegend.enchantmentorder.domain.businesslogic.targetableItemTypes
+import com.hamthelegend.enchantmentorder.extensions.search
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -22,14 +23,12 @@ class ChooseTargetViewModel @Inject constructor(
     var searchQuery by mutableStateOf("")
         private set
 
-    var availableTargets by mutableStateOf(targetableItemTypes)
+    var targets by mutableStateOf(targetableItemTypes)
         private set
 
     fun onSearchQueryChange(newQuery: String) {
         searchQuery = newQuery
-        availableTargets = targetableItemTypes.filter { itemType ->
-            newQuery in itemType.friendlyName
-        }
+        targets = targetableItemTypes.search(searchQuery) { it.friendlyName }
     }
 
 }

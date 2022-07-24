@@ -58,6 +58,6 @@ fun combine(
     }
     productEnchantments.sortBy { it.type.friendlyName }
     val productAnvilUseCount = max(target.anvilUseCount, sacrifice.anvilUseCount) + 1
-    val productItem = Item(target.type, productEnchantments.toSet(), productAnvilUseCount)
+    val productItem = Item(target.type, productEnchantments.toList(), productAnvilUseCount)
     return Combination(target, sacrifice, productItem, combiningCost)
 }

@@ -13,4 +13,10 @@
     <string name="java_edition">Java Edition</string>
     <string name="bedrock_edition">Bedrock Edition</string>
     <string name="choose_target">Choose your target</string>
+    <string name="unenchanted">Unenchanted</string>
+    <string name="reset_selection">Reset selection</string>
+    <string name="select_defaults">Select defaults</string>
+    <string name="target">Target</string>
+    <string name="add_initial_enchantments">Add initial enchantments</string>
+    <string name="done">Done</string>
 </resources>
