@@ -48,12 +48,12 @@ fun Target(
                 Column {
                     Text(
                         text = target.type.friendlyName,
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                     Text(
                         text = target.enchantments.displayString ?:
                         stringResource(R.string.unenchanted),
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
             }

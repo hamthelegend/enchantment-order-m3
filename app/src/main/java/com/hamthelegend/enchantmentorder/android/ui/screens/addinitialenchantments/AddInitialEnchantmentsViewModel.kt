@@ -8,9 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.navArgs
 import com.hamthelegend.enchantmentorder.domain.businesslogic.forEdition
 import com.hamthelegend.enchantmentorder.domain.businesslogic.getDefaultEnchantmentsForEdition
-import com.hamthelegend.enchantmentorder.domain.businesslogic.removedIncompatibleWith
+import com.hamthelegend.enchantmentorder.domain.businesslogic.removeIncompatibleWith
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
-import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
 import com.hamthelegend.enchantmentorder.extensions.search
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -32,14 +31,17 @@ class AddInitialEnchantmentsViewModel @Inject constructor(
     var enchantmentTypes by mutableStateOf(target.compatibleEnchantmentTypes.forEdition(edition))
         private set
 
-    var initialEnchantments: List<Enchantment> by mutableStateOf(emptyList())
+    var initialEnchantments by mutableStateOf(emptyList<Enchantment>())
+        private set
+
+    var renamingCostDialogVisible by mutableStateOf(false)
         private set
 
     private fun refreshEnchantmentTypes() {
         enchantmentTypes = target.compatibleEnchantmentTypes
             .forEdition(edition)
             .search(searchQuery) { it.friendlyName }
-            .removedIncompatibleWith(initialEnchantments.map { it.type })
+            .removeIncompatibleWith(initialEnchantments.map { it.type })
     }
 
     fun onSearchQueryChange(newQuery: String) {
@@ -65,6 +67,14 @@ class AddInitialEnchantmentsViewModel @Inject constructor(
     fun resetSelection() {
         initialEnchantments = emptyList()
         refreshEnchantmentTypes()
+    }
+
+    fun showRenamingCostDialog() {
+        renamingCostDialogVisible = true
+    }
+
+    fun hideRenamingCostDialog() {
+        renamingCostDialogVisible = false
     }
 
 }

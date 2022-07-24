@@ -10,10 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
-import com.hamthelegend.enchantmentorder.composables.Updatable
 import com.hamthelegend.enchantmentorder.composables.rememberDerivedStateOf
 import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonNull.content
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,7 +21,8 @@ fun Screen(
     title: String,
     modifier: Modifier = Modifier,
     navigateUp: (() -> Unit)? = null,
-    searchUpdatable: Updatable<String>? = null,
+    searchQuery: String?,
+    onSearchQueryChange: (newQuery: String) -> Unit,
     scrolled: Boolean = false,
     floatingActionButton: @Composable () -> Unit = {},
     content: @Composable () -> Unit,
@@ -32,7 +33,8 @@ fun Screen(
             TopBar(
                 title = title,
                 navigateUp = navigateUp,
-                searchUpdatable = searchUpdatable,
+                searchQuery = searchQuery,
+                onSearchQueryChange = onSearchQueryChange,
                 scrolled = scrolled,
             )
         },
@@ -66,7 +68,8 @@ fun ScreenWithTopBarPreview() {
                     lazyListState.animateScrollToItem(0, 0)
                 }
             },
-            searchUpdatable = Updatable(searchQuery) { searchQuery = it },
+            searchQuery = searchQuery,
+            onSearchQueryChange = { searchQuery = it },
             scrolled = scrolled,
         ) {
             LazyColumn(

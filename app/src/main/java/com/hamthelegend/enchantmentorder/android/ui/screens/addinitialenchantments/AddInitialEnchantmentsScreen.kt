@@ -1,15 +1,10 @@
 package com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantments
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.twotone.Done
-import androidx.compose.material.icons.twotone.Forward
-import androidx.compose.material.icons.twotone.NextPlan
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -21,15 +16,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.EnchantmentLevelPicker
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
-import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
+import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
+import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseBooksScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.*
+import com.hamthelegend.enchantmentorder.domain.businesslogic.forEdition
 import com.hamthelegend.enchantmentorder.domain.businesslogic.new
+import com.hamthelegend.enchantmentorder.domain.businesslogic.removeIncompatibleWith
+import com.hamthelegend.enchantmentorder.domain.businesslogic.renamingCostToAnvilUseCount
+import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
 import com.hamthelegend.enchantmentorder.domain.models.item.Item
 import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
+import com.hamthelegend.enchantmentorder.extensions.search
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -41,7 +42,8 @@ fun AddInitialEnchantmentsScreen(
 ) {
     AddInitialEnchantments(
         navigateUp = navigator::navigateUp,
-        searchUpdatable = Updatable(viewModel.searchQuery, viewModel::onSearchQueryChange),
+        searchQuery = viewModel.searchQuery,
+        onSearchQueryChange = viewModel::onSearchQueryChange,
         target = viewModel.target,
         enchantmentTypes = viewModel.enchantmentTypes,
         initialEnchantments = viewModel.initialEnchantments,
@@ -49,7 +51,21 @@ fun AddInitialEnchantmentsScreen(
         removeInitialEnchantment = viewModel::removeInitialEnchantment,
         selectDefaults = viewModel::selectDefaults,
         resetSelection = viewModel::resetSelection,
-        navigateToChooseBooksScreen = {},
+        renamingCostDialogVisible = viewModel.renamingCostDialogVisible,
+        showRenamingCostDialog = viewModel::showRenamingCostDialog,
+        hideRenamingCostDialog = viewModel::hideRenamingCostDialog,
+        navigateToChooseBooksScreen = { renamingCost ->
+            navigator.navigate(
+                ChooseBooksScreenDestination(
+                    edition = viewModel.edition,
+                    target = Item(
+                        type = viewModel.target,
+                        enchantments = viewModel.initialEnchantments,
+                        anvilUseCount = renamingCost.renamingCostToAnvilUseCount(),
+                    )
+                )
+            )
+        },
     )
 }
 
@@ -57,7 +73,8 @@ fun AddInitialEnchantmentsScreen(
 @Composable
 fun AddInitialEnchantments(
     navigateUp: () -> Unit,
-    searchUpdatable: Updatable<String>,
+    searchQuery: String,
+    onSearchQueryChange: (newQuery: String) -> Unit,
     target: ItemType,
     enchantmentTypes: List<EnchantmentType>,
     initialEnchantments: List<Enchantment>,
@@ -65,67 +82,74 @@ fun AddInitialEnchantments(
     removeInitialEnchantment: (Enchantment) -> Unit,
     selectDefaults: () -> Unit,
     resetSelection: () -> Unit,
-    navigateToChooseBooksScreen: () -> Unit,
+    renamingCostDialogVisible: Boolean,
+    showRenamingCostDialog: () -> Unit,
+    hideRenamingCostDialog: () -> Unit,
+    navigateToChooseBooksScreen: (renamingCost: Int) -> Unit,
 ) {
-    val lazyColumnState = rememberLazyListState()
-    val scrolled by rememberDerivedStateOf {
-        lazyColumnState.firstVisibleItemIndex != 0 ||
-                lazyColumnState.firstVisibleItemScrollOffset != 0
+    if (renamingCostDialogVisible) {
+        RenamingCostDialog(
+            dismiss = hideRenamingCostDialog,
+            confirm = { renamingCost ->
+                navigateToChooseBooksScreen(renamingCost)
+            },
+        )
     }
 
-    Screen(
+    ScreenWithLazyColumn(
         navigateUp = navigateUp,
         title = stringResource(R.string.add_initial_enchantments),
-        searchUpdatable = searchUpdatable,
-        scrolled = scrolled,
+        searchQuery = searchQuery,
+        onSearchQueryChange = onSearchQueryChange,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = navigateToChooseBooksScreen,
+                onClick = {
+                    if (initialEnchantments.isNotEmpty()) {
+                        showRenamingCostDialog()
+                    } else {
+                        navigateToChooseBooksScreen(1)
+                    }
+                },
                 imageVector = ThemeIcons.Done,
                 contentDescription = stringResource(R.string.done),
             )
         }
     ) {
-        FullScreenLazyColumn(
-            state = lazyColumnState,
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            item {
-                Target(
-                    target = new(target),
-                    hasSelection = initialEnchantments.isNotEmpty(),
-                    selectDefaults = selectDefaults,
-                    resetSelection = resetSelection,
-                    modifier = Modifier.padding(4.dp),
-                )
+        item {
+            Target(
+                target = new(target),
+                hasSelection = initialEnchantments.isNotEmpty(),
+                selectDefaults = selectDefaults,
+                resetSelection = resetSelection,
+                modifier = Modifier.padding(4.dp),
+            )
+        }
+        itemsIndexed(
+            items = enchantmentTypes,
+            key = { _, enchantmentType ->
+                enchantmentType.friendlyName
+            },
+        ) { index, enchantmentType ->
+            val initialEnchantment =
+                initialEnchantments.firstOrNull { it.type == enchantmentType }
+            val topActive = initialEnchantments.any { enchantment ->
+                enchantment.type == enchantmentTypes.getOrNull(index - 1)
             }
-            itemsIndexed(
-                items = enchantmentTypes,
-                key = { _, enchantmentType ->
-                    enchantmentType.friendlyName
-                },
-            ) { index, enchantmentType ->
-                val initialEnchantment =
-                    initialEnchantments.firstOrNull { it.type == enchantmentType }
-                val topActive = initialEnchantments.any { enchantment ->
-                    enchantment.type == enchantmentTypes.getOrNull(index - 1)
-                }
-                val bottomActive = initialEnchantments.any { enchantment ->
-                    enchantment.type == enchantmentTypes.getOrNull(index + 1)
-                }
+            val bottomActive = initialEnchantments.any { enchantment ->
+                enchantment.type == enchantmentTypes.getOrNull(index + 1)
+            }
 
-                EnchantmentLevelPicker(
-                    enchantmentType = enchantmentType,
-                    level = initialEnchantment?.level,
-                    select = { enchantment -> addInitialEnchantment(enchantment) },
-                    deselect = { enchantment -> removeInitialEnchantment(enchantment) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .animateItemPlacement(),
-                    topActive = topActive,
-                    bottomActive = bottomActive,
-                )
-            }
+            EnchantmentLevelPicker(
+                enchantmentType = enchantmentType,
+                level = initialEnchantment?.level,
+                select = { enchantment -> addInitialEnchantment(enchantment) },
+                deselect = { enchantment -> removeInitialEnchantment(enchantment) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItemPlacement(),
+                topActive = topActive,
+                bottomActive = bottomActive,
+            )
         }
     }
 }
@@ -133,33 +157,51 @@ fun AddInitialEnchantments(
 @Preview
 @Composable
 fun AddInitialEnchantmentsPreview() {
+
     EnchantmentOrderTheme {
-        var search by rememberMutableStateOf(value = "")
+        val edition = Edition.Java
+        var searchQuery by rememberMutableStateOf(value = "")
         val target = ItemType.Pickaxe
         var enchantmentTypes by rememberMutableStateOf(value = target.compatibleEnchantmentTypes.toList())
         var initialEnchantments by rememberMutableStateOf(value = emptyList<Enchantment>())
+        var renamingCostDialogVisible by rememberMutableStateOf(value = false)
 
-        AddInitialEnchantments(navigateUp = {},
-            searchUpdatable = Updatable(search) { query ->
-                search = query
-                enchantmentTypes =
-                    target.compatibleEnchantmentTypes.filter { query in it.friendlyName }
+        fun refreshEnchantmentTypes() {
+            enchantmentTypes = target.compatibleEnchantmentTypes
+                .forEdition(edition)
+                .search(searchQuery) { it.friendlyName }
+                .removeIncompatibleWith(initialEnchantments.map { it.type })
+        }
+
+        AddInitialEnchantments(
+            navigateUp = {},
+            searchQuery = searchQuery,
+            onSearchQueryChange = {
+                searchQuery = it
+                refreshEnchantmentTypes()
             },
             target = ItemType.Pickaxe,
             enchantmentTypes = enchantmentTypes,
             initialEnchantments = initialEnchantments,
             addInitialEnchantment = {
                 initialEnchantments += it
+                refreshEnchantmentTypes()
             },
             removeInitialEnchantment = {
                 initialEnchantments -= it
+                refreshEnchantmentTypes()
             },
             selectDefaults = {
                 initialEnchantments = enchantmentTypes.map { Enchantment(it, it.maxLevel) }
+                refreshEnchantmentTypes()
             },
             resetSelection = {
                 initialEnchantments = emptyList()
+                refreshEnchantmentTypes()
             },
+            renamingCostDialogVisible = renamingCostDialogVisible,
+            showRenamingCostDialog = { renamingCostDialogVisible = true },
+            hideRenamingCostDialog = { renamingCostDialogVisible = false },
             navigateToChooseBooksScreen = {},
         )
     }

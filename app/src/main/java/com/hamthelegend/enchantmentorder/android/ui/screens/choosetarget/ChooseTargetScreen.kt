@@ -1,5 +1,6 @@
 package com.hamthelegend.enchantmentorder.android.ui.screens.choosetarget
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.items
@@ -14,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.res.imageResId
 import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
+import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddInitialEnchantmentsScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.composables.*
@@ -31,7 +33,8 @@ fun ChooseTargetScreen(
 
     ChooseTarget(
         navigateUp = navigator::navigateUp,
-        searchUpdatable = Updatable(viewModel.searchQuery, viewModel::onSearchQueryChange),
+        searchQuery = viewModel.searchQuery,
+        onSearchQueryChange = viewModel::onSearchQueryChange,
         targets = viewModel.targets,
         navigateToAddInitialEnchantmentsScreen = { target ->
             navigator.navigate(
@@ -45,40 +48,31 @@ fun ChooseTargetScreen(
 
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ChooseTarget(
     navigateUp: () -> Unit,
-    searchUpdatable: Updatable<String>,
+    searchQuery: String,
+    onSearchQueryChange: (newQuery: String) -> Unit,
     targets: List<ItemType>,
     navigateToAddInitialEnchantmentsScreen: (target: ItemType) -> Unit,
 ) {
-    val lazyColumnState = rememberLazyListState()
-    val scrolled by rememberDerivedStateOf {
-        lazyColumnState.firstVisibleItemIndex != 0 ||
-                lazyColumnState.firstVisibleItemScrollOffset != 0
-    }
-
-    Screen(
+    ScreenWithLazyColumn(
         title = stringResource(R.string.choose_target),
         navigateUp = navigateUp,
-        searchUpdatable = searchUpdatable,
-        scrolled = scrolled,
+        searchQuery = searchQuery,
+        onSearchQueryChange = onSearchQueryChange,
     ) {
-        FullScreenLazyColumn(
-            state = lazyColumnState,
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            items(
-                items = targets,
-                key = { itemType -> itemType.friendlyName },
-            ) { itemType ->
-                ImageTextCard(
-                    painterResourceId = itemType.imageResId,
-                    text = itemType.friendlyName,
-                    onClick = { navigateToAddInitialEnchantmentsScreen(itemType) },
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+        items(
+            items = targets,
+            key = { itemType -> itemType.friendlyName },
+        ) { itemType ->
+            ImageTextCard(
+                painterResourceId = itemType.imageResId,
+                text = itemType.friendlyName,
+                onClick = { navigateToAddInitialEnchantmentsScreen(itemType) },
+                modifier = Modifier.fillMaxWidth().animateItemPlacement(),
+            )
         }
     }
 }
@@ -93,7 +87,8 @@ fun ChooseTargetPreview() {
 
         ChooseTarget(
             navigateUp = {},
-            searchUpdatable = Updatable(searchQuery) { searchQuery = it },
+            searchQuery = searchQuery,
+            onSearchQueryChange = { searchQuery = it },
             targets = targets,
             navigateToAddInitialEnchantmentsScreen = {},
         )

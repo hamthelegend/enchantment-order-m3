@@ -89,7 +89,7 @@ fun ImageTextCard(
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
@@ -159,7 +159,7 @@ fun ImageTextCard(
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }

@@ -19,4 +19,11 @@
     <string name="target">Target</string>
     <string name="add_initial_enchantments">Add initial enchantments</string>
     <string name="done">Done</string>
+    <string name="choose_books">Choose your books</string>
+    <string name="custom_books">Custom books</string>
+    <string name="max_solo_enchantments">Max single enchantment books</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="renaming_cost">Renaming cost</string>
+    <string name="xp">XP</string>
 </resources>

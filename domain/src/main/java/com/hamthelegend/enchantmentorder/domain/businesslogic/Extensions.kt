@@ -24,7 +24,7 @@ fun Int.anvilUseCountToCost() = (2.0.pow(this) - 1).toInt()
 
 fun Int.costToAnvilUseCount() = (ln(this.toDouble() + 1) / ln(2.0)).toInt()
 
-fun Int.renameCostToAnvilUseCount() = (this - 1).costToAnvilUseCount()
+fun Int.renamingCostToAnvilUseCount() = (this - 1).costToAnvilUseCount()
 
 fun Int.isCostTooExpensive() = this >= 40
 
@@ -59,14 +59,20 @@ val Collection<Enchantment>.displayString: String?
         return stringBuilder.toString()
     }
 
-fun List<EnchantmentType>.removedIncompatibleWith(selectedEnchantmentTypes: List<EnchantmentType>) =
+fun List<EnchantmentType>.removeIncompatibleWith(selectedEnchantmentTypes: List<EnchantmentType>) =
     filter { enchantmentType ->
         selectedEnchantmentTypes.all { selectedEnchantmentType ->
             enchantmentType isCompatibleWith selectedEnchantmentType
         }
     }
 
-fun ItemType.getDefaultEnchantmentsForEdition(edition: Edition) =
-    defaultEnchantmentTypes.forEdition(edition).map { enchantmentType ->
-        Enchantment(enchantmentType, enchantmentType.maxLevel)
+@JvmName("removeIncompatibleWithEnchantments")
+fun List<Enchantment>.removeIncompatibleWith(selectedEnchantment: List<Enchantment>) =
+    filter { enchantment ->
+        selectedEnchantment.all { selectedEnchantmentType ->
+            enchantment isCompatibleWith selectedEnchantmentType
+        }
     }
+
+fun ItemType.getDefaultEnchantmentsForEdition(edition: Edition) =
+    defaultEnchantmentTypes.forEdition(edition).map { enchantmentType -> max(enchantmentType) }

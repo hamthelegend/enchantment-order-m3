@@ -23,7 +23,6 @@ import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.IconButton
-import com.hamthelegend.enchantmentorder.composables.Updatable
 import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 
 @Composable
@@ -31,7 +30,8 @@ fun TopBar(
     title: String,
     modifier: Modifier = Modifier,
     navigateUp: (() -> Unit)? = null,
-    searchUpdatable: Updatable<String>? = null,
+    searchQuery: String? = null,
+    onSearchQueryChange: (newQuery: String) -> Unit = {},
     scrolled: Boolean = false,
 ) {
     val scrollFraction by animateFloatAsState(
@@ -65,7 +65,7 @@ fun TopBar(
                         }
                     },
                     actions = {
-                        if (searchUpdatable != null) {
+                        if (searchQuery != null) {
                             IconButton(
                                 imageVector = ThemeIcons.Search,
                                 contentDescription = stringResource(id = R.string.search),
@@ -85,8 +85,11 @@ fun TopBar(
             ) {
                 SearchBar(
                     shouldBeInFocus = searching,
-                    searchUpdatable = searchUpdatable ?: Updatable("") {},
-                    onStopSearching = { searching = false },
+                    query = searchQuery ?: "",
+                    onQueryChange = onSearchQueryChange,
+                    onStopSearching = {
+                        searching = false
+                    },
                     modifier = Modifier.padding(4.dp)
                 )
             }
@@ -103,7 +106,8 @@ fun TopBarPreview() {
         TopBar(
             title = "Enchantment Order",
             navigateUp = { scrolled = !scrolled },
-            searchUpdatable = Updatable(searchQuery) { searchQuery = it },
+            searchQuery = searchQuery,
+            onSearchQueryChange = { searchQuery = it },
             scrolled = scrolled,
         )
     }

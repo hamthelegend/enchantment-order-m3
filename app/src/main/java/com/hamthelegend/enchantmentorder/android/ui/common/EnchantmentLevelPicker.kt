@@ -107,7 +107,7 @@ fun EnchantmentLevelPicker(
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = name,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
         AnimatedVisibility(visible = pickingLevel) {

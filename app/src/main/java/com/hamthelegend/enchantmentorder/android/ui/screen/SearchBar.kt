@@ -3,6 +3,8 @@ package com.hamthelegend.enchantmentorder.android.ui.screen
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.Clear
+import androidx.compose.material.icons.twotone.Search
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,11 +17,11 @@ import androidx.compose.ui.res.stringResource
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.IconButton
-import com.hamthelegend.enchantmentorder.composables.Updatable
 
 @Composable
 fun SearchBar(
-    searchUpdatable: Updatable<String>,
+    query: String,
+    onQueryChange: (newQuery: String) -> Unit,
     onStopSearching: () -> Unit,
     modifier: Modifier = Modifier,
     shouldBeInFocus: Boolean = true,
@@ -27,8 +29,8 @@ fun SearchBar(
     val focusRequester = remember { FocusRequester() }
 
     OutlinedTextField(
-        value = searchUpdatable.value,
-        onValueChange = searchUpdatable.onValueChange,
+        value = query,
+        onValueChange = onQueryChange,
         modifier = modifier
             .fillMaxWidth()
             .focusRequester(focusRequester),
@@ -39,24 +41,20 @@ fun SearchBar(
             )
         },
         leadingIcon = {
-            IconButton(
-                imageVector = ThemeIcons.ArrowBack,
-                contentDescription = stringResource(id = R.string.stop_searching),
-                onClick = {
-                    onStopSearching()
-                    searchUpdatable.onValueChange("")
-                    focusRequester.freeFocus()
-                },
+            Icon(
+                imageVector = ThemeIcons.Search,
+                contentDescription = stringResource(id = R.string.search),
             )
         },
         trailingIcon = {
-            if (searchUpdatable.value.isNotEmpty()) {
-                IconButton(
-                    imageVector = ThemeIcons.Clear,
-                    contentDescription = stringResource(id = R.string.clear_search),
-                    onClick = { searchUpdatable.onValueChange("") },
-                )
-            }
+            IconButton(
+                imageVector = ThemeIcons.Clear,
+                contentDescription = stringResource(id = R.string.clear_search),
+                onClick = {
+                    onStopSearching()
+                    onQueryChange("")
+                },
+            )
         },
         singleLine = true,
     )

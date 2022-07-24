@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
+import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseTargetScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
@@ -34,27 +35,25 @@ fun ChooseEdition(
     navigateUp: () -> Unit,
     navigateToChooseTargetScreen: (editionPicked: Edition) -> Unit,
 ) {
-    Screen(
+    ScreenWithLazyColumn(
         title = stringResource(R.string.choose_edition),
         navigateUp = navigateUp,
     ) {
-        FullScreenLazyColumn {
-            item {
-                ImageTextCard(
-                    imageVector = ThemeIcons.DesktopWindows,
-                    text = stringResource(R.string.java_edition),
-                    onClick = { navigateToChooseTargetScreen(Edition.Java) },
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-            item {
-                ImageTextCard(
-                    imageVector = ThemeIcons.Devices,
-                    text = stringResource(R.string.bedrock_edition),
-                    onClick = { navigateToChooseTargetScreen(Edition.Bedrock) },
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+        item {
+            ImageTextCard(
+                imageVector = ThemeIcons.DesktopWindows,
+                text = stringResource(R.string.java_edition),
+                onClick = { navigateToChooseTargetScreen(Edition.Java) },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        item {
+            ImageTextCard(
+                imageVector = ThemeIcons.Devices,
+                text = stringResource(R.string.bedrock_edition),
+                onClick = { navigateToChooseTargetScreen(Edition.Bedrock) },
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
 }
