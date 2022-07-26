@@ -2,6 +2,7 @@ package com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantme
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.twotone.Done
@@ -112,6 +113,7 @@ fun AddInitialEnchantments(
                 },
                 imageVector = ThemeIcons.Done,
                 contentDescription = stringResource(R.string.done),
+                modifier = Modifier.navigationBarsPadding(),
             )
         }
     ) {

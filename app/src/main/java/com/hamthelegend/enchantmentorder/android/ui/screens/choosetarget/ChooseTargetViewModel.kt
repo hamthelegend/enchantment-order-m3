@@ -20,15 +20,23 @@ class ChooseTargetViewModel @Inject constructor(
 
     val edition = args.edition
 
-    var searchQuery by mutableStateOf("")
-        private set
+    private var _searchQuery by mutableStateOf("")
+    var searchQuery
+        get() = _searchQuery
+        private set(value) {
+            _searchQuery = value
+            refreshList()
+        }
 
     var targets by mutableStateOf(targetableItemTypes)
         private set
 
+    private fun refreshList() {
+        targets = targetableItemTypes.search(searchQuery) { it.friendlyName }
+    }
+
     fun onSearchQueryChange(newQuery: String) {
         searchQuery = newQuery
-        targets = targetableItemTypes.search(searchQuery) { it.friendlyName }
     }
 
 }

@@ -12,7 +12,7 @@ enum class EnchantmentType(
     val bedrockItemMultiplier: Int = javaItemMultiplier,
     val bedrockBookMultiplier: Int = javaBookMultiplier,
     val inJava: Boolean = true,
-    val inBedrock: Boolean = false,
+    val inBedrock: Boolean = true,
 ) {
 
     AquaAffinity(

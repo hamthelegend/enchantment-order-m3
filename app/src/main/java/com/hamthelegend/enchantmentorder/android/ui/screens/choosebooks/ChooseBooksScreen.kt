@@ -1,11 +1,17 @@
 package com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.twotone.Add
+import androidx.compose.material.icons.twotone.Done
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
-import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
 import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
+import com.hamthelegend.enchantmentorder.composables.FloatingActionButton
 import com.hamthelegend.enchantmentorder.composables.ImageTextCard
 import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 import com.hamthelegend.enchantmentorder.domain.businesslogic.*
@@ -53,10 +59,12 @@ fun ChooseBooksScreen(
         toggleMaxSoloEnchantmentSelection = viewModel::toggleMaxSoloEnchantmentSelection,
         selectDefaults = viewModel::selectDefaults,
         resetSelection = viewModel::resetSelection,
+        navigateToResultScreenFabVisible = viewModel.navigateToResultScreenFabVisible,
+        navigateToResultScreen = {},
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun ChooseBooks(
     navigateUp: () -> Unit,
@@ -71,12 +79,28 @@ fun ChooseBooks(
     toggleMaxSoloEnchantmentSelection: (Enchantment) -> Unit,
     selectDefaults: () -> Unit,
     resetSelection: () -> Unit,
+    navigateToResultScreenFabVisible: Boolean,
+    navigateToResultScreen: () -> Unit,
 ) {
     ScreenWithLazyColumn(
         title = stringResource(R.string.choose_books),
         navigateUp = navigateUp,
         searchQuery = searchQuery,
         onSearchQueryChange = onSearchQueryChange,
+        floatingActionButton = {
+            AnimatedVisibility(
+                visible = navigateToResultScreenFabVisible,
+                enter = scaleIn(),
+                exit = scaleOut(),
+            ) {
+                FloatingActionButton(
+                    onClick = navigateToResultScreen,
+                    imageVector = ThemeIcons.Done,
+                    contentDescription = stringResource(id = R.string.done),
+                    modifier = Modifier.navigationBarsPadding(),
+                )
+            }
+        }
     ) {
         item {
             Target(
@@ -125,7 +149,9 @@ fun ChooseBooks(
             Text(
                 text = stringResource(R.string.max_solo_enchantments),
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(16.dp).animateItemPlacement(),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .animateItemPlacement(),
             )
         }
         itemsIndexed(
@@ -147,7 +173,9 @@ fun ChooseBooks(
                 topActive = topSelected,
                 bottomActive = bottomSelected,
                 onClick = { toggleMaxSoloEnchantmentSelection(enchantment) },
-                modifier = Modifier.fillMaxWidth().animateItemPlacement(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItemPlacement(),
             )
         }
     }
@@ -162,37 +190,26 @@ fun ChooseBooksPreview() {
         val target = new(ItemType.Pickaxe, Enchantment(EnchantmentType.Fortune, 3))
         var searchQuery by rememberMutableStateOf("")
         var customBooks by rememberMutableStateOf(emptyList<Item>())
-        var maxSoloEnchantments by rememberMutableStateOf(
-            target.type.compatibleEnchantmentTypes
-                .forEdition(edition)
-                .map { enchantmentType -> max(enchantmentType) }
-                .removeIncompatibleWith(target.enchantments)
-        )
         var selectedMaxSoloEnchantments by rememberMutableStateOf(emptyList<Enchantment>())
-
-        fun refreshMaxSoloEnchantments() {
-            var supposedItem = target
-            for (customBook in customBooks) {
-                supposedItem = (supposedItem + customBook).product
-            }
-            for (maxSingleEnchantment in selectedMaxSoloEnchantments) {
-                val book = enchantedBook(maxSingleEnchantment)
-                supposedItem = (supposedItem + book).product
-            }
-
-            maxSoloEnchantments = target.type.compatibleEnchantmentTypes
-                .forEdition(edition)
-                .map { enchantmentType -> max(enchantmentType) }
-                .removeIncompatibleWith(target.enchantments)
-                .search(searchQuery) { it.toString() }
+        var supposedItem = target
+        for (customBook in customBooks) {
+            supposedItem = (supposedItem + customBook).product
         }
+
+        val maxSoloEnchantments = target.type.compatibleEnchantmentTypes
+            .forEdition(edition)
+            .removeIncompatibleWith(selectedMaxSoloEnchantments.map { it.type })
+            .map { enchantmentType -> max(enchantmentType) }
+            .removeIncompatibleWith(supposedItem.enchantments)
+            .search(searchQuery) { it.toString() }
+        val navigateToResultScreenFabVisible =
+            selectedMaxSoloEnchantments.isNotEmpty() || customBooks.isNotEmpty()
 
         ChooseBooks(
             navigateUp = {},
             searchQuery = searchQuery,
             onSearchQueryChange = { newQuery ->
                 searchQuery = newQuery
-                refreshMaxSoloEnchantments()
             },
             target = target,
             customBooks = customBooks,
@@ -200,11 +217,9 @@ fun ChooseBooksPreview() {
             selectedMaxSoloEnchantments = selectedMaxSoloEnchantments,
             addCustomBook = { book ->
                 customBooks += book
-                refreshMaxSoloEnchantments()
             },
             removeCustomBook = { book ->
                 customBooks -= book
-                refreshMaxSoloEnchantments()
             },
             toggleMaxSoloEnchantmentSelection = { enchantment ->
                 if (enchantment in selectedMaxSoloEnchantments) {
@@ -212,23 +227,23 @@ fun ChooseBooksPreview() {
                 } else {
                     selectedMaxSoloEnchantments -= enchantment
                 }
-                refreshMaxSoloEnchantments()
             },
             selectDefaults = {
-                var supposedItem = target
+                var _supposedItem = target
                 for (customBook in customBooks) {
-                    supposedItem = (supposedItem + customBook).product
+                    _supposedItem = (_supposedItem + customBook).product
                 }
 
                 selectedMaxSoloEnchantments = target.type
                     .getDefaultEnchantmentsForEdition(edition)
-                    .removeIncompatibleWith(supposedItem.enchantments)
-                refreshMaxSoloEnchantments()
+                    .removeIncompatibleWith(_supposedItem.enchantments)
             },
             resetSelection = {
                 selectedMaxSoloEnchantments = emptyList()
-                refreshMaxSoloEnchantments()
             },
+            navigateToResultScreenFabVisible =
+            navigateToResultScreenFabVisible,
+            navigateToResultScreen = {},
         )
 
     }

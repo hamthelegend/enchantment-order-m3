@@ -24,10 +24,21 @@ class ChooseBooksViewModel @Inject constructor(
 
     val target = navArgs.target
 
-    var searchQuery by mutableStateOf("")
-        private set
+    private var _searchQuery by mutableStateOf("")
+    var searchQuery
+        get() = _searchQuery
+        private set(value) {
+            _searchQuery = value
+            refreshUi()
+        }
 
-    var customBooks by mutableStateOf(emptyList<Item>())
+    private var _customBooks by mutableStateOf(emptyList<Item>())
+    var customBooks
+        get() = _customBooks
+        private set(value) {
+            _customBooks = value
+            refreshUi()
+        }
 
     var maxSoloEnchantments by mutableStateOf(
         target.type.compatibleEnchantmentTypes
@@ -36,47 +47,52 @@ class ChooseBooksViewModel @Inject constructor(
             .removeIncompatibleWith(target.enchantments)
     )
 
-    var selectedMaxSoloEnchantments by mutableStateOf(emptyList<Enchantment>())
+    private var _selectedMaxSoloEnchantments by mutableStateOf(emptyList<Enchantment>())
+    var selectedMaxSoloEnchantments
+        get() = _selectedMaxSoloEnchantments
+        private set(value) {
+            _selectedMaxSoloEnchantments = value
+            refreshUi()
+        }
 
-    private fun refreshMaxSoloEnchantments() {
+    var navigateToResultScreenFabVisible by mutableStateOf(false)
+        private set
+
+    private fun refreshUi() {
         var supposedItem = target
         for (customBook in customBooks) {
             supposedItem = (supposedItem + customBook).product
         }
-        for (maxSingleEnchantment in selectedMaxSoloEnchantments) {
-            val book = enchantedBook(maxSingleEnchantment)
-            supposedItem = (supposedItem + book).product
-        }
 
         maxSoloEnchantments = target.type.compatibleEnchantmentTypes
             .forEdition(edition)
+            .removeIncompatibleWith(selectedMaxSoloEnchantments.map { it.type })
             .map { enchantmentType -> max(enchantmentType) }
-            .removeIncompatibleWith(target.enchantments)
+            .removeIncompatibleWith(supposedItem.enchantments)
             .search(searchQuery) { it.toString() }
+
+        navigateToResultScreenFabVisible =
+            selectedMaxSoloEnchantments.isNotEmpty() || customBooks.isNotEmpty()
     }
 
     fun onSearchQueryChange(newQuery: String) {
         searchQuery = newQuery
-        refreshMaxSoloEnchantments()
     }
 
     fun addCustomBook(book: Item) {
         customBooks += book
-        refreshMaxSoloEnchantments()
     }
 
     fun removeCustomBook(book: Item) {
         customBooks -= book
-        refreshMaxSoloEnchantments()
     }
 
     fun toggleMaxSoloEnchantmentSelection(enchantment: Enchantment) {
         if (enchantment in selectedMaxSoloEnchantments) {
-            selectedMaxSoloEnchantments += enchantment
-        } else {
             selectedMaxSoloEnchantments -= enchantment
+        } else {
+            selectedMaxSoloEnchantments += enchantment
         }
-        refreshMaxSoloEnchantments()
     }
 
     fun selectDefaults() {
@@ -88,12 +104,10 @@ class ChooseBooksViewModel @Inject constructor(
         selectedMaxSoloEnchantments = target.type
             .getDefaultEnchantmentsForEdition(edition)
             .removeIncompatibleWith(supposedItem.enchantments)
-        refreshMaxSoloEnchantments()
     }
 
     fun resetSelection() {
         selectedMaxSoloEnchantments = emptyList()
-        refreshMaxSoloEnchantments()
     }
 
 }

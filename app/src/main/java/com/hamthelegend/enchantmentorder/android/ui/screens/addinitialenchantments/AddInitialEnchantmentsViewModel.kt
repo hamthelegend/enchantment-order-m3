@@ -25,19 +25,29 @@ class AddInitialEnchantmentsViewModel @Inject constructor(
 
     val target = navArgs.target
 
-    var searchQuery by mutableStateOf("")
-        private set
+    private var _searchQuery by mutableStateOf("")
+    var searchQuery
+        get() = _searchQuery
+        private set(value) {
+            _searchQuery = value
+            refreshList()
+        }
 
     var enchantmentTypes by mutableStateOf(target.compatibleEnchantmentTypes.forEdition(edition))
         private set
 
-    var initialEnchantments by mutableStateOf(emptyList<Enchantment>())
-        private set
+    private var _initialEnchantments by mutableStateOf(emptyList<Enchantment>())
+    var initialEnchantments
+        get() = _initialEnchantments
+        private set(value) {
+            _initialEnchantments = value
+            refreshList()
+        }
 
     var renamingCostDialogVisible by mutableStateOf(false)
         private set
 
-    private fun refreshEnchantmentTypes() {
+    private fun refreshList() {
         enchantmentTypes = target.compatibleEnchantmentTypes
             .forEdition(edition)
             .search(searchQuery) { it.friendlyName }
@@ -46,27 +56,22 @@ class AddInitialEnchantmentsViewModel @Inject constructor(
 
     fun onSearchQueryChange(newQuery: String) {
         searchQuery = newQuery
-        refreshEnchantmentTypes()
     }
 
     fun addInitialEnchantment(enchantment: Enchantment) {
         initialEnchantments += enchantment
-        refreshEnchantmentTypes()
     }
 
     fun removeInitialEnchantment(enchantment: Enchantment) {
         initialEnchantments -= enchantment
-        refreshEnchantmentTypes()
     }
 
     fun selectDefaults() {
         initialEnchantments = target.getDefaultEnchantmentsForEdition(edition)
-        refreshEnchantmentTypes()
     }
 
     fun resetSelection() {
         initialEnchantments = emptyList()
-        refreshEnchantmentTypes()
     }
 
     fun showRenamingCostDialog() {

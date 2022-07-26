@@ -31,8 +31,12 @@ fun FloatingActionButton(
     onClick: () -> Unit,
     imageVector: ImageVector,
     contentDescription: String?,
+    modifier: Modifier = Modifier,
 ) {
-    FloatingActionButton(onClick = onClick) {
+    FloatingActionButton(
+        onClick = onClick,
+        modifier = modifier,
+    ) {
         Icon(imageVector = imageVector, contentDescription = contentDescription)
     }
 }
