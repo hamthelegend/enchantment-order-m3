@@ -21,7 +21,7 @@ import com.hamthelegend.enchantmentorder.android.ui.res.imageResId
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.*
-import com.hamthelegend.enchantmentorder.domain.businesslogic.displayString
+import com.hamthelegend.enchantmentorder.domain.extensions.displayString
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType.*
 import com.hamthelegend.enchantmentorder.domain.models.item.Item

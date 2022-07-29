@@ -19,7 +19,7 @@ import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddInitialEnchantmentsScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.composables.*
-import com.hamthelegend.enchantmentorder.domain.businesslogic.targetableItemTypes
+import com.hamthelegend.enchantmentorder.domain.extensions.targetableItemTypes
 import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
