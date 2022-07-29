@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.navArgs
-import com.hamthelegend.enchantmentorder.domain.businesslogic.forEdition
-import com.hamthelegend.enchantmentorder.domain.businesslogic.getDefaultEnchantmentsForEdition
-import com.hamthelegend.enchantmentorder.domain.businesslogic.removeIncompatibleWith
+import com.hamthelegend.enchantmentorder.domain.extensions.forEdition
+import com.hamthelegend.enchantmentorder.domain.extensions.getDefaultEnchantmentsForEdition
+import com.hamthelegend.enchantmentorder.domain.extensions.removeIncompatibleWith
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.extensions.search
 import dagger.hilt.android.lifecycle.HiltViewModel

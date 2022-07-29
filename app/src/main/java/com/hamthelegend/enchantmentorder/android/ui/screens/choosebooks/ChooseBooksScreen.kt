@@ -5,7 +5,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -30,7 +29,7 @@ import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.FloatingActionButton
 import com.hamthelegend.enchantmentorder.composables.ImageTextCard
 import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
-import com.hamthelegend.enchantmentorder.domain.businesslogic.*
+import com.hamthelegend.enchantmentorder.domain.extensions.*
 import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
@@ -54,12 +53,14 @@ fun ChooseBooksScreen(
         customBooks = viewModel.customBooks,
         maxSoloEnchantments = viewModel.maxSoloEnchantments,
         selectedMaxSoloEnchantments = viewModel.selectedMaxSoloEnchantments,
+        navigateToAddCustomBookScreen = {
+//            navigator.navigate()
+        },
         addCustomBook = viewModel::addCustomBook,
         removeCustomBook = viewModel::removeCustomBook,
         toggleMaxSoloEnchantmentSelection = viewModel::toggleMaxSoloEnchantmentSelection,
         selectDefaults = viewModel::selectDefaults,
         resetSelection = viewModel::resetSelection,
-        navigateToResultScreenFabVisible = viewModel.navigateToResultScreenFabVisible,
         navigateToResultScreen = {},
     )
 }
@@ -74,12 +75,12 @@ fun ChooseBooks(
     customBooks: List<Item>,
     maxSoloEnchantments: List<Enchantment>,
     selectedMaxSoloEnchantments: List<Enchantment>,
-    addCustomBook: (book: Item) -> Unit,
+    navigateToAddCustomBookScreen: () -> Unit,
+    addCustomBook: (book: Item) -> Boolean,
     removeCustomBook: (book: Item) -> Unit,
     toggleMaxSoloEnchantmentSelection: (Enchantment) -> Unit,
     selectDefaults: () -> Unit,
     resetSelection: () -> Unit,
-    navigateToResultScreenFabVisible: Boolean,
     navigateToResultScreen: () -> Unit,
 ) {
     ScreenWithLazyColumn(
@@ -88,8 +89,11 @@ fun ChooseBooks(
         searchQuery = searchQuery,
         onSearchQueryChange = onSearchQueryChange,
         floatingActionButton = {
+            val fabVisible =
+                selectedMaxSoloEnchantments.isNotEmpty() || customBooks.isNotEmpty()
+
             AnimatedVisibility(
-                visible = navigateToResultScreenFabVisible,
+                visible = fabVisible,
                 enter = scaleIn(),
                 exit = scaleOut(),
             ) {
@@ -140,7 +144,7 @@ fun ChooseBooks(
         item {
             ImageTextCard(
                 imageVector = ThemeIcons.Add,
-                text = "Add custom book",
+                text = stringResource(R.string.add_custom_book),
                 onClick = { /*TODO*/ },
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -195,15 +199,12 @@ fun ChooseBooksPreview() {
         for (customBook in customBooks) {
             supposedItem = (supposedItem + customBook).product
         }
-
         val maxSoloEnchantments = target.type.compatibleEnchantmentTypes
             .forEdition(edition)
             .removeIncompatibleWith(selectedMaxSoloEnchantments.map { it.type })
             .map { enchantmentType -> max(enchantmentType) }
             .removeIncompatibleWith(supposedItem.enchantments)
             .search(searchQuery) { it.toString() }
-        val navigateToResultScreenFabVisible =
-            selectedMaxSoloEnchantments.isNotEmpty() || customBooks.isNotEmpty()
 
         ChooseBooks(
             navigateUp = {},
@@ -217,6 +218,7 @@ fun ChooseBooksPreview() {
             selectedMaxSoloEnchantments = selectedMaxSoloEnchantments,
             addCustomBook = { book ->
                 customBooks += book
+                true
             },
             removeCustomBook = { book ->
                 customBooks -= book
@@ -241,9 +243,8 @@ fun ChooseBooksPreview() {
             resetSelection = {
                 selectedMaxSoloEnchantments = emptyList()
             },
-            navigateToResultScreenFabVisible =
-            navigateToResultScreenFabVisible,
             navigateToResultScreen = {},
+            navigateToAddCustomBookScreen = {},
         )
 
     }

@@ -7,6 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.navArgs
 import com.hamthelegend.enchantmentorder.domain.businesslogic.*
+import com.hamthelegend.enchantmentorder.domain.exceptions.CombinationException
+import com.hamthelegend.enchantmentorder.domain.extensions.*
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.item.Item
 import com.hamthelegend.enchantmentorder.extensions.search
@@ -29,7 +31,7 @@ class ChooseBooksViewModel @Inject constructor(
         get() = _searchQuery
         private set(value) {
             _searchQuery = value
-            refreshUi()
+            refreshList()
         }
 
     private var _customBooks by mutableStateOf(emptyList<Item>())
@@ -37,7 +39,7 @@ class ChooseBooksViewModel @Inject constructor(
         get() = _customBooks
         private set(value) {
             _customBooks = value
-            refreshUi()
+            refreshList()
         }
 
     var maxSoloEnchantments by mutableStateOf(
@@ -52,35 +54,51 @@ class ChooseBooksViewModel @Inject constructor(
         get() = _selectedMaxSoloEnchantments
         private set(value) {
             _selectedMaxSoloEnchantments = value
-            refreshUi()
+            refreshList()
         }
 
-    var navigateToResultScreenFabVisible by mutableStateOf(false)
-        private set
-
-    private fun refreshUi() {
-        var supposedItem = target
-        for (customBook in customBooks) {
-            supposedItem = (supposedItem + customBook).product
-        }
+    private fun refreshList() {
+        val supposedProduct = (listOf(target) + customBooks).supposedProduct
 
         maxSoloEnchantments = target.type.compatibleEnchantmentTypes
             .forEdition(edition)
             .removeIncompatibleWith(selectedMaxSoloEnchantments.map { it.type })
             .map { enchantmentType -> max(enchantmentType) }
-            .removeIncompatibleWith(supposedItem.enchantments)
+            .removeIncompatibleWith(supposedProduct?.enchantments ?: emptyList())
             .search(searchQuery) { it.toString() }
-
-        navigateToResultScreenFabVisible =
-            selectedMaxSoloEnchantments.isNotEmpty() || customBooks.isNotEmpty()
     }
 
     fun onSearchQueryChange(newQuery: String) {
         searchQuery = newQuery
     }
 
-    fun addCustomBook(book: Item) {
-        customBooks += book
+    fun isBookCompatible(book: Item): Boolean {
+        val supposedProduct = (
+                listOf(target) +
+                        customBooks +
+                        selectedMaxSoloEnchantments.map { enchantedBook(it) }
+                ).supposedProduct
+        return try {
+            supposedProduct!! + book
+            true
+        } catch (_: CombinationException) {
+            false
+        }
+    }
+
+    fun addCustomBook(book: Item): Boolean {
+        val supposedProduct = (
+                listOf(target) +
+                        customBooks +
+                        selectedMaxSoloEnchantments.map { enchantedBook(it) }
+                ).supposedProduct
+        return try {
+            supposedProduct!! + book
+            customBooks += book
+            true
+        } catch (_: CombinationException) {
+            false
+        }
     }
 
     fun removeCustomBook(book: Item) {
@@ -96,14 +114,11 @@ class ChooseBooksViewModel @Inject constructor(
     }
 
     fun selectDefaults() {
-        var supposedItem = target
-        for (customBook in customBooks) {
-            supposedItem = (supposedItem + customBook).product
-        }
+        val supposedProduct = (listOf(target) + customBooks).supposedProduct
 
         selectedMaxSoloEnchantments = target.type
             .getDefaultEnchantmentsForEdition(edition)
-            .removeIncompatibleWith(supposedItem.enchantments)
+            .removeIncompatibleWith(supposedProduct?.enchantments ?: emptyList())
     }
 
     fun resetSelection() {

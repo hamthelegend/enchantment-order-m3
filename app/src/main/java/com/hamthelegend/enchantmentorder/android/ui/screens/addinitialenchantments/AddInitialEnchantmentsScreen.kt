@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.twotone.Done
 import androidx.compose.runtime.Composable
@@ -17,15 +18,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.EnchantmentLevelPicker
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
+import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
 import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseBooksScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.*
-import com.hamthelegend.enchantmentorder.domain.businesslogic.forEdition
-import com.hamthelegend.enchantmentorder.domain.businesslogic.new
-import com.hamthelegend.enchantmentorder.domain.businesslogic.removeIncompatibleWith
-import com.hamthelegend.enchantmentorder.domain.businesslogic.renamingCostToAnvilUseCount
+import com.hamthelegend.enchantmentorder.domain.extensions.forEdition
+import com.hamthelegend.enchantmentorder.domain.extensions.new
+import com.hamthelegend.enchantmentorder.domain.extensions.removeIncompatibleWith
+import com.hamthelegend.enchantmentorder.domain.extensions.renamingCostToAnvilUseCount
 import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
@@ -126,33 +128,12 @@ fun AddInitialEnchantments(
                 modifier = Modifier.padding(4.dp),
             )
         }
-        itemsIndexed(
-            items = enchantmentTypes,
-            key = { _, enchantmentType ->
-                enchantmentType.friendlyName
-            },
-        ) { index, enchantmentType ->
-            val initialEnchantment =
-                initialEnchantments.firstOrNull { it.type == enchantmentType }
-            val topActive = initialEnchantments.any { enchantment ->
-                enchantment.type == enchantmentTypes.getOrNull(index - 1)
-            }
-            val bottomActive = initialEnchantments.any { enchantment ->
-                enchantment.type == enchantmentTypes.getOrNull(index + 1)
-            }
-
-            EnchantmentLevelPicker(
-                enchantmentType = enchantmentType,
-                level = initialEnchantment?.level,
-                select = { enchantment -> addInitialEnchantment(enchantment) },
-                deselect = { enchantment -> removeInitialEnchantment(enchantment) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .animateItemPlacement(),
-                topActive = topActive,
-                bottomActive = bottomActive,
-            )
-        }
+        itemsForEnchantmentPicker(
+            enchantmentTypes,
+            initialEnchantments,
+            addInitialEnchantment,
+            removeInitialEnchantment,
+        )
     }
 }
 

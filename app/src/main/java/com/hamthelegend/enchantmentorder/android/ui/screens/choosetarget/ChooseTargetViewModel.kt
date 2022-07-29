@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.navArgs
-import com.hamthelegend.enchantmentorder.domain.businesslogic.targetableItemTypes
+import com.hamthelegend.enchantmentorder.domain.extensions.targetableItemTypes
 import com.hamthelegend.enchantmentorder.extensions.search
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,9 +16,9 @@ class ChooseTargetViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ): ViewModel() {
 
-    private val args: ChooseTargetNavArgs = savedStateHandle.navArgs()
+    private val navArgs = savedStateHandle.navArgs<ChooseTargetNavArgs>()
 
-    val edition = args.edition
+    val edition = navArgs.edition
 
     private var _searchQuery by mutableStateOf("")
     var searchQuery

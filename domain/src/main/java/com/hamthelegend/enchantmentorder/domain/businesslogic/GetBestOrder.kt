@@ -1,6 +1,8 @@
 package com.hamthelegend.enchantmentorder.domain.businesslogic
 
 import com.hamthelegend.enchantmentorder.domain.exceptions.CombinationException
+import com.hamthelegend.enchantmentorder.domain.extensions.enchantedBook
+import com.hamthelegend.enchantmentorder.domain.extensions.plus
 import com.hamthelegend.enchantmentorder.domain.models.combination.Combination
 import com.hamthelegend.enchantmentorder.domain.models.combination.CombinationOrder
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
