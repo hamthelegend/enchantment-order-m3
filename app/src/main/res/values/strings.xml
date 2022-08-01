@@ -28,5 +28,5 @@
     <string name="xp">XP</string>
     <string name="add_custom_book">Add custom book</string>
     <string name="add">Add</string>
-    <string name="no_compatible_enchantments">The book must at least have one compatible enchantments.</string>
+    <string name="no_compatible_enchantments">The book must at least have one compatible enchantment.</string>
 </resources>

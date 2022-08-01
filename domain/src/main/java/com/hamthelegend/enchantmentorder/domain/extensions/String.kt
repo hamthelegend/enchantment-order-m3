@@ -5,7 +5,7 @@ import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 val Collection<Enchantment>.displayString: String?
     get() {
         if (size == 0) return null
-        if (size == 1) return first().arabicLevelString
+        if (size == 1) return first().toString()
         val stringBuilder = StringBuilder()
         for ((index, enchantment) in this.withIndex()) {
             if (index != 0) {

@@ -21,6 +21,8 @@ import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
 import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
 import com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantments.RenamingCostDialog
+import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksNavGraph
+import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksViewModel
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.FloatingActionButton
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
@@ -30,10 +32,12 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
+@ChooseBooksNavGraph
 @Destination(navArgsDelegate = AddCustomBookNavArgs::class)
 @Composable
 fun AddCustomBookScreen(
     navigator: DestinationsNavigator,
+    chooseBooksViewModel: ChooseBooksViewModel,
     viewModel: AddCustomBookViewModel = hiltViewModel(),
 ) {
     AddCustomBook(
@@ -50,7 +54,12 @@ fun AddCustomBookScreen(
         renamingCostDialogVisible = viewModel.renamingCostDialogVisible,
         showRenamingCostDialog = viewModel::showRenamingCostDialog,
         hideRenamingCostDialog = viewModel::hideRenamingCostDialog,
-        addCustomBook = viewModel::addCustomBook,
+        isBookCompatible = {
+            chooseBooksViewModel.isBookCompatible(viewModel.compileCustomBook())
+        },
+        addCustomBook = { renamingCost ->
+            chooseBooksViewModel.addCustomBook(viewModel.compileCustomBook(renamingCost))
+        },
     )
 }
 
@@ -69,8 +78,9 @@ fun AddCustomBook(
     resetSelection: () -> Unit,
     renamingCostDialogVisible: Boolean,
     showRenamingCostDialog: () -> Unit,
-    hideRenamingCostDialog:() -> Unit,
-    addCustomBook: (renamingCost: Int) -> Boolean,
+    hideRenamingCostDialog: () -> Unit,
+    isBookCompatible: () -> Boolean,
+    addCustomBook: (renamingCost: Int) -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val snackbarHostStateScope = rememberCoroutineScope()
@@ -80,14 +90,8 @@ fun AddCustomBook(
         RenamingCostDialog(
             dismiss = hideRenamingCostDialog,
             confirm = { renamingCost ->
-                val addSuccessful = addCustomBook(renamingCost)
-                if (addSuccessful) {
-                    navigateUp()
-                } else {
-                    snackbarHostStateScope.launch {
-                        snackbarHostState.showSnackbar(noCompatibleEnchantmentsString)
-                    }
-                }
+                addCustomBook(renamingCost)
+                navigateUp()
             },
         )
     }
@@ -107,7 +111,15 @@ fun AddCustomBook(
                 exit = scaleOut(),
             ) {
                 FloatingActionButton(
-                    onClick = showRenamingCostDialog,
+                    onClick = {
+                        if (isBookCompatible()) {
+                            showRenamingCostDialog()
+                        } else {
+                            snackbarHostStateScope.launch {
+                                snackbarHostState.showSnackbar(noCompatibleEnchantmentsString)
+                            }
+                        }
+                    },
                     imageVector = ThemeIcons.Add,
                     contentDescription = stringResource(R.string.add),
                     modifier = Modifier.navigationBarsPadding(),

@@ -17,15 +17,13 @@ import javax.inject.Inject
 @HiltViewModel
 class AddCustomBookViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-): ViewModel() {
+) : ViewModel() {
 
     private val navArgs: AddCustomBookNavArgs = savedStateHandle.navArgs()
 
     val edition = navArgs.edition
 
     val target = navArgs.target
-
-    val addCustomBook = navArgs.addCustomBook
 
     private var _searchQuery by mutableStateOf("")
     var searchQuery
@@ -75,13 +73,10 @@ class AddCustomBookViewModel @Inject constructor(
         bookEnchantments = emptyList()
     }
 
-    fun addCustomBook(renamingCost: Int): Boolean {
-        val book = enchantedBook(
-            *bookEnchantments.toTypedArray(),
-            anvilUseCount = renamingCost.renamingCostToAnvilUseCount(),
-        )
-        return addCustomBook.function(book)
-    }
+    fun compileCustomBook(renamingCost: Int = 1) = enchantedBook(
+        *bookEnchantments.toTypedArray(),
+        anvilUseCount = renamingCost.renamingCostToAnvilUseCount(),
+    )
 
     fun showRenamingCostDialog() {
         renamingCostDialogVisible = true

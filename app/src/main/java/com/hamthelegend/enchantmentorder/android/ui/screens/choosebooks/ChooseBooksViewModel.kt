@@ -72,7 +72,7 @@ class ChooseBooksViewModel @Inject constructor(
         searchQuery = newQuery
     }
 
-    fun addCustomBook(book: Item): Boolean {
+    fun isBookCompatible(book: Item): Boolean {
         val supposedProduct = (
                 listOf(target) +
                         customBooks +
@@ -80,11 +80,14 @@ class ChooseBooksViewModel @Inject constructor(
                 ).supposedProduct
         return try {
             supposedProduct!! + book
-            customBooks += book
             true
         } catch (_: CombinationException) {
             false
         }
+    }
+
+    fun addCustomBook(book: Item) {
+        customBooks += book
     }
 
     fun removeCustomBook(book: Item) {

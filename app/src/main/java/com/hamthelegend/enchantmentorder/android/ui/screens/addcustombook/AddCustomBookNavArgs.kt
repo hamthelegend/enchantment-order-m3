@@ -14,17 +14,7 @@ import java.lang.reflect.Type
 import kotlin.reflect.KFunction
 import kotlin.reflect.KType
 
-@NavTypeSerializer
-class ItemToBooleanNavTypeSerializer : DestinationsNavTypeSerializer<AddCustomBook> {
-    override fun toRouteString(value: AddCustomBook): String =
-        Gson().toJson(value)
-
-    override fun fromRouteString(routeStr: String): AddCustomBook =
-        Gson().fromJson(routeStr, object : TypeToken<AddCustomBook>() {}.type)
-}
-
 data class AddCustomBookNavArgs(
     val edition: Edition,
     val target: Item,
-    val addCustomBook: AddCustomBook,
 )

@@ -41,11 +41,12 @@ import com.hamthelegend.enchantmentorder.extensions.search
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@ChooseBooksNavGraph(start = true)
 @Destination(navArgsDelegate = ChooseBooksNavArgs::class)
 @Composable
 fun ChooseBooksScreen(
     navigator: DestinationsNavigator,
-    viewModel: ChooseBooksViewModel = hiltViewModel(),
+    viewModel: ChooseBooksViewModel,
 ) {
     ChooseBooks(
         navigateUp = navigator::navigateUp,
@@ -60,7 +61,6 @@ fun ChooseBooksScreen(
                 AddCustomBookScreenDestination(
                     edition = viewModel.edition,
                     target = viewModel.target,
-                    addCustomBook = AddCustomBook(viewModel::addCustomBook),
                 )
             )
         },
@@ -125,7 +125,7 @@ fun ChooseBooks(
             Text(
                 text = stringResource(R.string.custom_books),
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(16.dp).animateItemPlacement(),
             )
         }
         itemsIndexed(
@@ -144,7 +144,7 @@ fun ChooseBooks(
                 active = true,
                 topActive = topActive,
                 bottomActive = bottomActive,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().animateItemPlacement(),
             )
         }
         item {
@@ -152,7 +152,7 @@ fun ChooseBooks(
                 imageVector = ThemeIcons.Add,
                 text = stringResource(R.string.add_custom_book),
                 onClick = navigateToAddCustomBookScreen,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().animateItemPlacement(),
             )
         }
         item {
