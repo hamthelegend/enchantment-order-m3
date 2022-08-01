@@ -8,10 +8,14 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material.icons.twotone.Done
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
@@ -23,11 +27,31 @@ import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
 import com.hamthelegend.enchantmentorder.domain.models.item.Item
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.launch
 
 @Destination(navArgsDelegate = AddCustomBookNavArgs::class)
 @Composable
-fun AddCustomBookScreen() {
-
+fun AddCustomBookScreen(
+    navigator: DestinationsNavigator,
+    viewModel: AddCustomBookViewModel = hiltViewModel(),
+) {
+    AddCustomBook(
+        navigateUp = navigator::navigateUp,
+        searchQuery = viewModel.searchQuery,
+        onSearchQueryChange = viewModel::onSearchQueryChange,
+        target = viewModel.target,
+        enchantmentTypes = viewModel.enchantmentTypes,
+        bookEnchantments = viewModel.bookEnchantments,
+        addBookEnchantment = viewModel::addBookEnchantment,
+        removeBookEnchantment = viewModel::removeBookEnchantment,
+        selectDefaults = viewModel::selectDefaults,
+        resetSelection = viewModel::resetSelection,
+        renamingCostDialogVisible = viewModel.renamingCostDialogVisible,
+        showRenamingCostDialog = viewModel::showRenamingCostDialog,
+        hideRenamingCostDialog = viewModel::hideRenamingCostDialog,
+        addCustomBook = viewModel::addCustomBook,
+    )
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -46,13 +70,24 @@ fun AddCustomBook(
     renamingCostDialogVisible: Boolean,
     showRenamingCostDialog: () -> Unit,
     hideRenamingCostDialog:() -> Unit,
-    addCustomBook: (renamingCost: Int) -> Unit,
+    addCustomBook: (renamingCost: Int) -> Boolean,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostStateScope = rememberCoroutineScope()
+    val noCompatibleEnchantmentsString = stringResource(R.string.no_compatible_enchantments)
+
     if (renamingCostDialogVisible) {
         RenamingCostDialog(
             dismiss = hideRenamingCostDialog,
             confirm = { renamingCost ->
-//                val addSuccessful = addCustomBook(renamingCost)
+                val addSuccessful = addCustomBook(renamingCost)
+                if (addSuccessful) {
+                    navigateUp()
+                } else {
+                    snackbarHostStateScope.launch {
+                        snackbarHostState.showSnackbar(noCompatibleEnchantmentsString)
+                    }
+                }
             },
         )
     }
@@ -62,6 +97,7 @@ fun AddCustomBook(
         navigateUp = navigateUp,
         searchQuery = searchQuery,
         onSearchQueryChange = onSearchQueryChange,
+        snackbarHostState = snackbarHostState,
         floatingActionButton = {
             val fabVisible = bookEnchantments.isNotEmpty()
 

@@ -1,7 +1,0 @@
-package com.hamthelegend.enchantmentorder.android.navigation
-
-import com.hamthelegend.enchantmentorder.domain.models.item.Item
-import com.hamthelegend.enchantmentorder.extensions.decodeFromJsonString
-import com.hamthelegend.enchantmentorder.extensions.encodeToJsonString
-import com.ramcosta.composedestinations.navargs.DestinationsNavTypeSerializer
-import com.ramcosta.composedestinations.navargs.NavTypeSerializer

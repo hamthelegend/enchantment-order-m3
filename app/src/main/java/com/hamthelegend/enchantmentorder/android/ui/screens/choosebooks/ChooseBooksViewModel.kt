@@ -72,20 +72,6 @@ class ChooseBooksViewModel @Inject constructor(
         searchQuery = newQuery
     }
 
-    fun isBookCompatible(book: Item): Boolean {
-        val supposedProduct = (
-                listOf(target) +
-                        customBooks +
-                        selectedMaxSoloEnchantments.map { enchantedBook(it) }
-                ).supposedProduct
-        return try {
-            supposedProduct!! + book
-            true
-        } catch (_: CombinationException) {
-            false
-        }
-    }
-
     fun addCustomBook(book: Item): Boolean {
         val supposedProduct = (
                 listOf(target) +

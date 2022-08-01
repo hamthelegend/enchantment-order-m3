@@ -108,4 +108,7 @@ dependencies {
     // System UI Controller
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
 
+    // Gson
+    implementation 'com.google.code.gson:gson:2.9.0'
+
 }

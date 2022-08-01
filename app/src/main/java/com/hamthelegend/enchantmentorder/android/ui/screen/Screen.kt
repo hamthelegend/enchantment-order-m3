@@ -25,6 +25,7 @@ fun Screen(
     onSearchQueryChange: (newQuery: String) -> Unit,
     scrolled: Boolean = false,
     floatingActionButton: @Composable () -> Unit = {},
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     content: @Composable () -> Unit,
 ) {
     Scaffold(
@@ -37,6 +38,9 @@ fun Screen(
                 onSearchQueryChange = onSearchQueryChange,
                 scrolled = scrolled,
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         },
         floatingActionButton = floatingActionButton,
     ) { paddingValues ->
@@ -111,7 +115,7 @@ fun ScreenWithoutAppBarPreview() {
     EnchantmentOrderTheme {
 
         Screen {
-            LazyColumn(modifier = Modifier.fillMaxSize(), ) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items((1..100).toList()) { item ->
                     Text(
                         text = item.toString(),

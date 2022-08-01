@@ -25,7 +25,7 @@ class AddCustomBookViewModel @Inject constructor(
 
     val target = navArgs.target
 
-//    val addCustomBook = navArgs.addCustomBook
+    val addCustomBook = navArgs.addCustomBook
 
     private var _searchQuery by mutableStateOf("")
     var searchQuery
@@ -55,6 +55,10 @@ class AddCustomBookViewModel @Inject constructor(
             .search(searchQuery) { it.friendlyName }
     }
 
+    fun onSearchQueryChange(newQuery: String) {
+        searchQuery = newQuery
+    }
+
     fun addBookEnchantment(enchantment: Enchantment) {
         bookEnchantments += enchantment
     }
@@ -71,12 +75,12 @@ class AddCustomBookViewModel @Inject constructor(
         bookEnchantments = emptyList()
     }
 
-    fun addCustomBook(renamingCost: Int) {
+    fun addCustomBook(renamingCost: Int): Boolean {
         val book = enchantedBook(
             *bookEnchantments.toTypedArray(),
             anvilUseCount = renamingCost.renamingCostToAnvilUseCount(),
         )
-//        addCustomBook(book)
+        return addCustomBook.function(book)
     }
 
     fun showRenamingCostDialog() {

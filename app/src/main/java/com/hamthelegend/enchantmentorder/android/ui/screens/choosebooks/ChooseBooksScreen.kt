@@ -24,6 +24,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
+import com.hamthelegend.enchantmentorder.android.ui.screens.addcustombook.AddCustomBook
+import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddCustomBookScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.FloatingActionButton
@@ -54,9 +56,14 @@ fun ChooseBooksScreen(
         maxSoloEnchantments = viewModel.maxSoloEnchantments,
         selectedMaxSoloEnchantments = viewModel.selectedMaxSoloEnchantments,
         navigateToAddCustomBookScreen = {
-//            navigator.navigate()
+            navigator.navigate(
+                AddCustomBookScreenDestination(
+                    edition = viewModel.edition,
+                    target = viewModel.target,
+                    addCustomBook = AddCustomBook(viewModel::addCustomBook),
+                )
+            )
         },
-        addCustomBook = viewModel::addCustomBook,
         removeCustomBook = viewModel::removeCustomBook,
         toggleMaxSoloEnchantmentSelection = viewModel::toggleMaxSoloEnchantmentSelection,
         selectDefaults = viewModel::selectDefaults,
@@ -76,7 +83,6 @@ fun ChooseBooks(
     maxSoloEnchantments: List<Enchantment>,
     selectedMaxSoloEnchantments: List<Enchantment>,
     navigateToAddCustomBookScreen: () -> Unit,
-    addCustomBook: (book: Item) -> Boolean,
     removeCustomBook: (book: Item) -> Unit,
     toggleMaxSoloEnchantmentSelection: (Enchantment) -> Unit,
     selectDefaults: () -> Unit,
@@ -145,7 +151,7 @@ fun ChooseBooks(
             ImageTextCard(
                 imageVector = ThemeIcons.Add,
                 text = stringResource(R.string.add_custom_book),
-                onClick = { /*TODO*/ },
+                onClick = navigateToAddCustomBookScreen,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -216,10 +222,6 @@ fun ChooseBooksPreview() {
             customBooks = customBooks,
             maxSoloEnchantments = maxSoloEnchantments,
             selectedMaxSoloEnchantments = selectedMaxSoloEnchantments,
-            addCustomBook = { book ->
-                customBooks += book
-                true
-            },
             removeCustomBook = { book ->
                 customBooks -= book
             },
