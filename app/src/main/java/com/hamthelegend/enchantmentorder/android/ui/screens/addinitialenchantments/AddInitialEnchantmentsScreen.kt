@@ -1,11 +1,8 @@
 package com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantments
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.twotone.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,10 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
-import com.hamthelegend.enchantmentorder.android.ui.common.EnchantmentLevelPicker
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
-import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
+import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseBooksScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
@@ -99,7 +95,7 @@ fun AddInitialEnchantments(
         )
     }
 
-    ScreenWithLazyColumn(
+    LazyColumnScreen(
         navigateUp = navigateUp,
         title = stringResource(R.string.add_initial_enchantments),
         searchQuery = searchQuery,

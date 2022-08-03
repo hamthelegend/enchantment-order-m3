@@ -31,14 +31,14 @@ fun HomeScreen(
 ) {
     Home(
         navigateToChooseEditionScreen = { navigator.navigate(ChooseEditionScreenDestination) },
-        navigateToSavedEnchantmentsScreen = {},
+//        navigateToSavedEnchantmentsScreen = {},
     )
 }
 
 @Composable
 fun Home(
     navigateToChooseEditionScreen: () -> Unit,
-    navigateToSavedEnchantmentsScreen: () -> Unit,
+//    navigateToSavedEnchantmentsScreen: () -> Unit,
 ) {
     Screen {
         Column(
@@ -65,11 +65,11 @@ fun Home(
                 text = stringResource(R.string.start_enchanting),
                 modifier = Modifier.fillMaxWidth(),
             )
-            TextButton(
-                onClick = navigateToSavedEnchantmentsScreen,
-                text = stringResource(R.string.saved_enchantments),
-                modifier = Modifier.fillMaxWidth(),
-            )
+//            TextButton(
+//                onClick = navigateToSavedEnchantmentsScreen,
+//                text = stringResource(R.string.saved_enchantments),
+//                modifier = Modifier.fillMaxWidth(),
+//            )
         }
     }
 }
@@ -80,7 +80,7 @@ fun HomeScreenPreview() {
     EnchantmentOrderTheme {
         Home(
             navigateToChooseEditionScreen = {},
-            navigateToSavedEnchantmentsScreen = {},
+//            navigateToSavedEnchantmentsScreen = {},
         )
     }
 }

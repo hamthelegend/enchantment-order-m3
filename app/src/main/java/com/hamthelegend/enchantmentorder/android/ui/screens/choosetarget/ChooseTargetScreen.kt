@@ -1,10 +1,8 @@
 package com.hamthelegend.enchantmentorder.android.ui.screens.choosetarget
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -14,8 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.res.imageResId
-import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
-import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
+import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddInitialEnchantmentsScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.composables.*
@@ -57,7 +54,7 @@ fun ChooseTarget(
     targets: List<ItemType>,
     navigateToAddInitialEnchantmentsScreen: (target: ItemType) -> Unit,
 ) {
-    ScreenWithLazyColumn(
+    LazyColumnScreen(
         title = stringResource(R.string.choose_target),
         navigateUp = navigateUp,
         searchQuery = searchQuery,

@@ -1,10 +1,11 @@
 package com.hamthelegend.enchantmentorder.domain.businesslogic
 
 import com.hamthelegend.enchantmentorder.domain.exceptions.CombinationException
+import com.hamthelegend.enchantmentorder.domain.extensions.combineWith
 import com.hamthelegend.enchantmentorder.domain.extensions.enchantedBook
-import com.hamthelegend.enchantmentorder.domain.extensions.plus
 import com.hamthelegend.enchantmentorder.domain.models.combination.Combination
 import com.hamthelegend.enchantmentorder.domain.models.combination.CombinationOrder
+import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.item.Item
 import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
@@ -15,13 +16,18 @@ val tooManyBooks = 9
 @JvmName("getBestOrderByEnchantments")
 fun getBestOrder(
     target: Item,
-    enchantments: List<Enchantment>
+    enchantments: List<Enchantment>,
+    edition: Edition,
 ): CombinationOrder {
     val items = enchantments.map { enchantment -> enchantedBook(enchantment) }
-    return getBestOrder(target, items)
+    return getBestOrder(target, items, edition)
 }
 
-fun getBestOrder(target: Item, items: List<Item>): CombinationOrder {
+fun getBestOrder(
+    target: Item,
+    items: List<Item>,
+    edition: Edition,
+): CombinationOrder {
     var bestCombinationOrder: CombinationOrder? = null
 
     fun generatePermutation(items: MutableList<Item>, k: Int) {
@@ -29,7 +35,7 @@ fun getBestOrder(target: Item, items: List<Item>): CombinationOrder {
         if (k == 1) {
             try {
                 val currentBestCombinationOrder = bestCombinationOrder
-                val combinationOrder = listOf(target, *items.toTypedArray()).combine()
+                val combinationOrder = listOf(target, *items.toTypedArray()).combine(edition)
                 if (currentBestCombinationOrder == null) {
                     bestCombinationOrder = combinationOrder
                 } else if (combinationOrder.totalCost < currentBestCombinationOrder.totalCost) {
@@ -52,7 +58,7 @@ fun getBestOrder(target: Item, items: List<Item>): CombinationOrder {
     return bestCombinationOrder ?: throw CombinationException("There is an incompatible book")
 }
 
-fun List<Item>.combine(): CombinationOrder {
+fun List<Item>.combine(edition: Edition): CombinationOrder {
     val combinations = mutableListOf<Combination>()
     var currentItems = this
     while (currentItems.size > 1) {
@@ -61,7 +67,7 @@ fun List<Item>.combine(): CombinationOrder {
             if (index + 1 <= currentItems.lastIndex) {
                 val target = currentItems[index]
                 val sacrifice = currentItems[index + 1]
-                val combinationResult = target + sacrifice
+                val combinationResult = target.combineWith(sacrifice, edition)
                 combinations.add(combinationResult)
                 nextItems.add(combinationResult.product)
             } else nextItems.add(currentItems[index])

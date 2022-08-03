@@ -49,6 +49,10 @@ class ChooseBooksViewModel @Inject constructor(
             .removeIncompatibleWith(target.enchantments)
     )
 
+    val books
+        get() = selectedMaxSoloEnchantments.map { enchantment ->  enchantedBook(enchantment) } +
+                customBooks
+
     private var _selectedMaxSoloEnchantments by mutableStateOf(emptyList<Enchantment>())
     var selectedMaxSoloEnchantments
         get() = _selectedMaxSoloEnchantments
@@ -58,7 +62,7 @@ class ChooseBooksViewModel @Inject constructor(
         }
 
     private fun refreshList() {
-        val supposedProduct = (listOf(target) + customBooks).supposedProduct
+        val supposedProduct = (listOf(target) + customBooks).getSupposedProduct(edition)
 
         maxSoloEnchantments = target.type.compatibleEnchantmentTypes
             .forEdition(edition)
@@ -77,9 +81,9 @@ class ChooseBooksViewModel @Inject constructor(
                 listOf(target) +
                         customBooks +
                         selectedMaxSoloEnchantments.map { enchantedBook(it) }
-                ).supposedProduct
+                ).getSupposedProduct(edition)
         return try {
-            supposedProduct!! + book
+            supposedProduct!!.combineWith(book, edition)
             true
         } catch (_: CombinationException) {
             false
@@ -103,7 +107,7 @@ class ChooseBooksViewModel @Inject constructor(
     }
 
     fun selectDefaults() {
-        val supposedProduct = (listOf(target) + customBooks).supposedProduct
+        val supposedProduct = (listOf(target) + customBooks).getSupposedProduct(edition)
 
         selectedMaxSoloEnchantments = target.type
             .getDefaultEnchantmentsForEdition(edition)

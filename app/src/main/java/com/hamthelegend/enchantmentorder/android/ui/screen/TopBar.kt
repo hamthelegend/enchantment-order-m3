@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.twotone.ArrowBack
@@ -32,6 +33,7 @@ fun TopBar(
     navigateUp: (() -> Unit)? = null,
     searchQuery: String? = null,
     onSearchQueryChange: (newQuery: String) -> Unit = {},
+    otherActions: @Composable RowScope.() -> Unit = {},
     scrolled: Boolean = false,
 ) {
     val scrollFraction by animateFloatAsState(
@@ -72,6 +74,7 @@ fun TopBar(
                                 onClick = { searching = true }
                             )
                         }
+                        otherActions()
                     },
                     colors = smallTopAppBarColors(
                         containerColor = Color.Transparent

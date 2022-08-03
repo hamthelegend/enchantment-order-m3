@@ -7,7 +7,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.twotone.Add
-import androidx.compose.material.icons.twotone.Done
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
-import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
+import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantments.RenamingCostDialog
 import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksNavGraph
 import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksViewModel
@@ -96,7 +95,7 @@ fun AddCustomBook(
         )
     }
 
-    ScreenWithLazyColumn(
+    LazyColumnScreen(
         title = stringResource(id = R.string.add_custom_book),
         navigateUp = navigateUp,
         searchQuery = searchQuery,

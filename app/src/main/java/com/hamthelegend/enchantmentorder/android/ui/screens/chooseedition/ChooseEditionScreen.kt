@@ -8,12 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.hamthelegend.enchantmentorder.android.R
-import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
-import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
+import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseTargetScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
-import com.hamthelegend.enchantmentorder.composables.FullScreenLazyColumn
 import com.hamthelegend.enchantmentorder.composables.ImageTextCard
 import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.ramcosta.composedestinations.annotation.Destination
@@ -35,7 +33,7 @@ fun ChooseEdition(
     navigateUp: () -> Unit,
     navigateToChooseTargetScreen: (editionPicked: Edition) -> Unit,
 ) {
-    ScreenWithLazyColumn(
+    LazyColumnScreen(
         title = stringResource(R.string.choose_edition),
         navigateUp = navigateUp,
     ) {

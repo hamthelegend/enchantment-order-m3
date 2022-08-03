@@ -20,12 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
-import com.hamthelegend.enchantmentorder.android.ui.screen.ScreenWithLazyColumn
-import com.hamthelegend.enchantmentorder.android.ui.screens.addcustombook.AddCustomBook
+import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddCustomBookScreenDestination
+import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ResultScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.FloatingActionButton
@@ -68,7 +67,13 @@ fun ChooseBooksScreen(
         toggleMaxSoloEnchantmentSelection = viewModel::toggleMaxSoloEnchantmentSelection,
         selectDefaults = viewModel::selectDefaults,
         resetSelection = viewModel::resetSelection,
-        navigateToResultScreen = {},
+        navigateToResultScreen = {
+            navigator.navigate(ResultScreenDestination(
+                edition = viewModel.edition,
+                target = viewModel.target,
+                books = viewModel.books.toTypedArray(),
+            ))
+        },
     )
 }
 
@@ -89,7 +94,7 @@ fun ChooseBooks(
     resetSelection: () -> Unit,
     navigateToResultScreen: () -> Unit,
 ) {
-    ScreenWithLazyColumn(
+    LazyColumnScreen(
         title = stringResource(R.string.choose_books),
         navigateUp = navigateUp,
         searchQuery = searchQuery,
@@ -125,7 +130,9 @@ fun ChooseBooks(
             Text(
                 text = stringResource(R.string.custom_books),
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(16.dp).animateItemPlacement(),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .animateItemPlacement(),
             )
         }
         itemsIndexed(
@@ -144,7 +151,9 @@ fun ChooseBooks(
                 active = true,
                 topActive = topActive,
                 bottomActive = bottomActive,
-                modifier = Modifier.fillMaxWidth().animateItemPlacement(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItemPlacement(),
             )
         }
         item {
@@ -152,7 +161,9 @@ fun ChooseBooks(
                 imageVector = ThemeIcons.Add,
                 text = stringResource(R.string.add_custom_book),
                 onClick = navigateToAddCustomBookScreen,
-                modifier = Modifier.fillMaxWidth().animateItemPlacement(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItemPlacement(),
             )
         }
         item {
@@ -201,15 +212,15 @@ fun ChooseBooksPreview() {
         var searchQuery by rememberMutableStateOf("")
         var customBooks by rememberMutableStateOf(emptyList<Item>())
         var selectedMaxSoloEnchantments by rememberMutableStateOf(emptyList<Enchantment>())
-        var supposedItem = target
+        var supposedProduct = target
         for (customBook in customBooks) {
-            supposedItem = (supposedItem + customBook).product
+            supposedProduct = supposedProduct.combineWith(customBook, edition).product
         }
         val maxSoloEnchantments = target.type.compatibleEnchantmentTypes
             .forEdition(edition)
             .removeIncompatibleWith(selectedMaxSoloEnchantments.map { it.type })
             .map { enchantmentType -> max(enchantmentType) }
-            .removeIncompatibleWith(supposedItem.enchantments)
+            .removeIncompatibleWith(supposedProduct.enchantments)
             .search(searchQuery) { it.toString() }
 
         ChooseBooks(
@@ -235,7 +246,7 @@ fun ChooseBooksPreview() {
             selectDefaults = {
                 var _supposedItem = target
                 for (customBook in customBooks) {
-                    _supposedItem = (_supposedItem + customBook).product
+                    _supposedItem = _supposedItem.combineWith(customBook, edition).product
                 }
 
                 selectedMaxSoloEnchantments = target.type

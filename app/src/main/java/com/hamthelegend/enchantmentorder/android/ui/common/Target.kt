@@ -1,7 +1,6 @@
 package com.hamthelegend.enchantmentorder.android.ui.common
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.twotone.Checklist
@@ -62,7 +61,10 @@ fun Target(
                 onClick = { if (hasSelection) resetSelection() else selectDefaults() },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                AnimatedContent(targetState = hasSelection) {
+                AnimatedContent(
+                    targetState = hasSelection,
+                    transitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
+                ) {
                     if (hasSelection) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(

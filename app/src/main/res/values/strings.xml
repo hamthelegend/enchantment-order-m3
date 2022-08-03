@@ -29,4 +29,11 @@
     <string name="add_custom_book">Add custom book</string>
     <string name="add">Add</string>
     <string name="no_compatible_enchantments">The book must at least have one compatible enchantment.</string>
+    <string name="cost">Cost: %1$d</string>
+    <string name="total_cost">Total cost: %1$d</string>
+    <string name="result">Result</string>
+    <string name="getting_the_best_order">Getting the best order…</string>
+    <string name="comfortable_view">Comfortable view</string>
+    <string name="compact_view">Compact view</string>
+    <string name="product">Product</string>
 </resources>
