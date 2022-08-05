@@ -12,7 +12,7 @@ import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseTargetScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
-import com.hamthelegend.enchantmentorder.composables.ImageTextCard
+import com.hamthelegend.enchantmentorder.composables.IconTextCard
 import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -38,7 +38,7 @@ fun ChooseEdition(
         navigateUp = navigateUp,
     ) {
         item {
-            ImageTextCard(
+            IconTextCard(
                 imageVector = ThemeIcons.DesktopWindows,
                 text = stringResource(R.string.java_edition),
                 onClick = { navigateToChooseTargetScreen(Edition.Java) },
@@ -46,7 +46,7 @@ fun ChooseEdition(
             )
         }
         item {
-            ImageTextCard(
+            IconTextCard(
                 imageVector = ThemeIcons.Devices,
                 text = stringResource(R.string.bedrock_edition),
                 onClick = { navigateToChooseTargetScreen(Edition.Bedrock) },

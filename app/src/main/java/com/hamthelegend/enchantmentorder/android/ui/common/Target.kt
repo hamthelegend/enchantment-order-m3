@@ -38,7 +38,7 @@ fun Target(
     Card(modifier = modifier) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row (verticalAlignment = Alignment.CenterVertically) {
-                Image(
+                Icon(
                     painter = painterResource(id = target.type.imageResId),
                     contentDescription = target.type.friendlyName,
                     modifier = Modifier.size(24.dp),

@@ -64,7 +64,7 @@ fun ChooseTarget(
             items = targets,
             key = { itemType -> itemType.friendlyName },
         ) { itemType ->
-            ImageTextCard(
+            IconTextCard(
                 painterResourceId = itemType.imageResId,
                 text = itemType.friendlyName,
                 onClick = { navigateToAddInitialEnchantmentsScreen(itemType) },

@@ -3,6 +3,7 @@ package com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -25,7 +26,7 @@ fun RenamingCostDialog(
 
     AlertDialog(
         icon = {
-            Image(
+            Icon(
                 painter = painterResource(id = R.drawable.xp),
                 contentDescription = stringResource(R.string.xp),
                 modifier = Modifier.size(24.dp),

@@ -99,7 +99,7 @@ fun EnchantmentLevelPicker(
                 null -> enchantmentType.friendlyName
                 else -> Enchantment(enchantmentType, level).toString()
             }
-            Image(
+            Icon(
                 painter = painterResource(id = ItemType.EnchantedBook.imageResId),
                 contentDescription = name,
                 modifier = Modifier.size(24.dp),

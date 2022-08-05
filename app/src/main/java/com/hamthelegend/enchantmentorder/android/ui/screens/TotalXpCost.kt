@@ -3,6 +3,7 @@ package com.hamthelegend.enchantmentorder.android.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +23,7 @@ fun TotalXpCost(
             text = stringResource(id = R.string.total_cost, cost),
             style = MaterialTheme.typography.labelSmall,
         )
-        Image(
+        Icon(
             painter = painterResource(id = R.drawable.xp),
             contentDescription = stringResource(id = R.string.xp),
             modifier = Modifier.size(16.dp)

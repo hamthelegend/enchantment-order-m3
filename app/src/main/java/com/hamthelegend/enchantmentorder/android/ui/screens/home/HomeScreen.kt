@@ -2,6 +2,7 @@ package com.hamthelegend.enchantmentorder.android.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,7 +49,7 @@ fun Home(
                 .fillMaxSize()
                 .padding(32.dp)
         ) {
-            Image(
+            Icon(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = stringResource(R.string.logo),
                 modifier = Modifier.size(80.dp),

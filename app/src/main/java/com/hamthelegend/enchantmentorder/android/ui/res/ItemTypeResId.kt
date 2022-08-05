@@ -7,7 +7,7 @@ import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
 
 val ItemType.imageResId
     get(): @DrawableRes Int = when (this) {
-        ItemType.EnchantedBook -> R.drawable.book_enchanted
+        ItemType.EnchantedBook -> R.drawable.book
         ItemType.Helmet -> R.drawable.helmet
         ItemType.Chestplate -> R.drawable.chestplate
         ItemType.Leggings -> R.drawable.leggings

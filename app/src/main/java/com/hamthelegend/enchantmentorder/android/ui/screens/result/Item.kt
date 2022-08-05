@@ -3,6 +3,7 @@ package com.hamthelegend.enchantmentorder.android.ui.screens.result
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +28,7 @@ fun Item(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        Image(
+        Icon(
             painter = painterResource(id = item.type.imageResId),
             contentDescription = item.type.friendlyName,
             modifier = Modifier.size(24.dp)
@@ -59,7 +60,7 @@ fun CompactItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        Image(
+        Icon(
             painter = painterResource(id = item.type.imageResId),
             contentDescription = item.type.friendlyName,
             modifier = Modifier.size(24.dp)

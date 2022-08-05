@@ -28,7 +28,7 @@ import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ResultS
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.FloatingActionButton
-import com.hamthelegend.enchantmentorder.composables.ImageTextCard
+import com.hamthelegend.enchantmentorder.composables.IconTextCard
 import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 import com.hamthelegend.enchantmentorder.domain.extensions.*
 import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
@@ -144,8 +144,8 @@ fun ChooseBooks(
             val topActive = index - 1 in customBooks.indices
             val bottomActive = index + 1 in customBooks.indices
 
-            ImageTextCard(
-                painterResourceId = R.drawable.book_enchanted,
+            IconTextCard(
+                painterResourceId = R.drawable.book,
                 text = book.enchantments.displayString ?: stringResource(id = R.string.unenchanted),
                 onClick = { removeCustomBook(book) },
                 active = true,
@@ -157,7 +157,7 @@ fun ChooseBooks(
             )
         }
         item {
-            ImageTextCard(
+            IconTextCard(
                 imageVector = ThemeIcons.Add,
                 text = stringResource(R.string.add_custom_book),
                 onClick = navigateToAddCustomBookScreen,
@@ -187,8 +187,8 @@ fun ChooseBooks(
             val bottomSelected =
                 maxSoloEnchantments.getOrNull(index + 1) in selectedMaxSoloEnchantments
 
-            ImageTextCard(
-                painterResourceId = R.drawable.book_enchanted,
+            IconTextCard(
+                painterResourceId = R.drawable.book,
                 text = enchantment.toString(),
                 active = selected,
                 topActive = topSelected,
