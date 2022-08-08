@@ -26,6 +26,7 @@ import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.IconButton
 import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
     title: String,
@@ -36,7 +37,7 @@ fun TopBar(
     otherActions: @Composable RowScope.() -> Unit = {},
     scrolled: Boolean = false,
 ) {
-    val scrollFraction by animateFloatAsState(
+    val colorTransitionFraction by animateFloatAsState(
         targetValue = when (scrolled) {
             true -> 1f
             false -> 0f
@@ -44,7 +45,7 @@ fun TopBar(
         animationSpec = tween(durationMillis = 50)
     )
     var searching by rememberMutableStateOf(value = false)
-    val color by smallTopAppBarColors().containerColor(scrollFraction = scrollFraction)
+    val color by smallTopAppBarColors().containerColor(colorTransitionFraction = colorTransitionFraction)
 
     Surface(
         color = color,

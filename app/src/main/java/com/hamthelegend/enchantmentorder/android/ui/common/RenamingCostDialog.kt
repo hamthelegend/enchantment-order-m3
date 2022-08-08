@@ -2,10 +2,7 @@ package com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantme
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -17,6 +14,7 @@ import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.composables.TextButton
 import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RenamingCostDialog(
     dismiss: () -> Unit,
