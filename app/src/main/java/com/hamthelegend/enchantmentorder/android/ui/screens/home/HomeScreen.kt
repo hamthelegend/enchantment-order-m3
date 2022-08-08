@@ -1,13 +1,15 @@
 package com.hamthelegend.enchantmentorder.android.ui.screens.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material.icons.twotone.DesktopMac
+import androidx.compose.material.icons.twotone.DesktopWindows
+import androidx.compose.material.icons.twotone.Devices
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -16,10 +18,12 @@ import androidx.compose.ui.unit.dp
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseEditionScreenDestination
+import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseTargetScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
-import com.hamthelegend.enchantmentorder.composables.Button
-import com.hamthelegend.enchantmentorder.composables.TextButton
+import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
+import com.hamthelegend.enchantmentorder.composables.IconTextCard
 import com.hamthelegend.enchantmentorder.composables.VerticalSpacer
+import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -31,46 +35,93 @@ fun HomeScreen(
     navigator: DestinationsNavigator,
 ) {
     Home(
-        navigateToChooseEditionScreen = { navigator.navigate(ChooseEditionScreenDestination) },
-//        navigateToSavedEnchantmentsScreen = {},
+        navigateToChooseTargetScreen = { edition ->
+            navigator.navigate(ChooseTargetScreenDestination(edition))
+        },
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
-    navigateToChooseEditionScreen: () -> Unit,
-//    navigateToSavedEnchantmentsScreen: () -> Unit,
+    navigateToChooseTargetScreen: (Edition) -> Unit,
 ) {
     Screen {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(32.dp)
+            modifier = Modifier.fillMaxSize(),
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = stringResource(R.string.logo),
-                modifier = Modifier.size(80.dp),
+                modifier = Modifier
+                    .padding(horizontal = 32.dp)
+                    .size(80.dp),
             )
             VerticalSpacer(height = 16.dp)
             Text(
-                text = stringResource(id = R.string.app_name),
-                style = MaterialTheme.typography.displaySmall,
+                text = stringResource(id = R.string.choose_edition),
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 32.dp),
             )
             VerticalSpacer(height = 16.dp)
-            Button(
-                onClick = navigateToChooseEditionScreen,
-                text = stringResource(R.string.start_enchanting),
-                modifier = Modifier.fillMaxWidth(),
-            )
-//            TextButton(
-//                onClick = navigateToSavedEnchantmentsScreen,
-//                text = stringResource(R.string.saved_enchantments),
-//                modifier = Modifier.fillMaxWidth(),
-//            )
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                ),
+                shape = RectangleShape,
+                onClick = { navigateToChooseTargetScreen(Edition.Java) },
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 32.dp,
+                            vertical = 16.dp,
+                        )
+                        .fillMaxWidth(),
+                ) {
+                    Icon(
+                        imageVector = ThemeIcons.DesktopMac,
+                        contentDescription = stringResource(id = R.string.java_edition),
+                        modifier = Modifier.size(24.dp),
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = stringResource(id = R.string.java_edition),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            }
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                ),
+                shape = RectangleShape,
+                onClick = { navigateToChooseTargetScreen(Edition.Bedrock) },
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 32.dp,
+                            vertical = 16.dp,
+                        )
+                        .fillMaxWidth(),
+                ) {
+                    Icon(
+                        imageVector = ThemeIcons.Devices,
+                        contentDescription = stringResource(id = R.string.bedrock_edition),
+                        modifier = Modifier.size(24.dp),
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = stringResource(id = R.string.bedrock_edition),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            }
         }
     }
 }
@@ -80,7 +131,7 @@ fun Home(
 fun HomeScreenPreview() {
     EnchantmentOrderTheme {
         Home(
-            navigateToChooseEditionScreen = {},
+            navigateToChooseTargetScreen = {},
 //            navigateToSavedEnchantmentsScreen = {},
         )
     }
