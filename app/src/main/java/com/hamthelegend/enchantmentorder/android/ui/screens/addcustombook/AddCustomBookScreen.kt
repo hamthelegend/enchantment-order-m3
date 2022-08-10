@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.twotone.Add
@@ -13,20 +14,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
+import com.hamthelegend.enchantmentorder.android.ui.common.InfoCard
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantments.RenamingCostDialog
 import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksNavGraph
 import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksViewModel
+import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.FloatingActionButton
+import com.hamthelegend.enchantmentorder.domain.extensions.new
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
 import com.hamthelegend.enchantmentorder.domain.models.item.Item
+import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -127,6 +133,14 @@ fun AddCustomBook(
         }
     ) {
         item {
+            InfoCard(
+                text = "Add a custom enchanted book with one or more enchantments of varying levels.",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+            )
+        }
+        item {
             Target(
                 target = target,
                 hasSelection = bookEnchantments.isNotEmpty(),
@@ -140,6 +154,30 @@ fun AddCustomBook(
             selectedEnchantments = bookEnchantments,
             selectEnchantment = addBookEnchantment,
             deselectEnchantment = removeBookEnchantment,
+        )
+    }
+}
+
+@Preview
+@Composable
+fun AddCustomBookScreenPreview() {
+    EnchantmentOrderTheme {
+        AddCustomBook(
+            navigateUp = {},
+            searchQuery = "",
+            onSearchQueryChange = {},
+            target = new(ItemType.Pickaxe),
+            enchantmentTypes = ItemType.Pickaxe.compatibleEnchantmentTypes.toList(),
+            bookEnchantments = emptyList(),
+            addBookEnchantment = {},
+            removeBookEnchantment = {},
+            selectDefaults = {},
+            resetSelection = {},
+            renamingCostDialogVisible = false,
+            showRenamingCostDialog = {},
+            hideRenamingCostDialog = {},
+            isBookCompatible = { true },
+            addCustomBook = {},
         )
     }
 }

@@ -28,7 +28,7 @@ fun IconTextCard(
     @DrawableRes painterResourceId: Int,
     text: String,
     modifier: Modifier = Modifier,
-    onClick: (() -> Unit)?,
+    onClick: (() -> Unit)? = null,
     active: Boolean = false,
     topActive: Boolean = false,
     bottomActive: Boolean = false,

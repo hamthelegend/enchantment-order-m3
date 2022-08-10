@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hamthelegend.enchantmentorder.android.R
+import com.hamthelegend.enchantmentorder.android.ui.common.InfoCard
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddCustomBookScreenDestination
@@ -117,6 +118,15 @@ fun ChooseBooks(
             }
         }
     ) {
+        item {
+            InfoCard(
+                text = stringResource(
+                    R.string.choose_books_info,
+                    target.type.friendlyName.lowercase(),
+                ),
+                modifier = Modifier.fillMaxWidth().padding(4.dp),
+            )
+        }
         item {
             Target(
                 target = target,

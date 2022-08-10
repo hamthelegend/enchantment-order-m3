@@ -36,4 +36,8 @@
     <string name="comfortable_view">Comfortable view</string>
     <string name="compact_view">Compact view</string>
     <string name="product">Product</string>
+    <string name="info">Info</string>
+    <string name="choose_target_info">Choose the item that you want to enchant.</string>
+    <string name="add_initial_enchantments_info">Select the enchantments that are already in the %1$s.</string>
+    <string name="choose_books_info">Choose the enchantment books that you want to add to the %1$s.</string>
 </resources>

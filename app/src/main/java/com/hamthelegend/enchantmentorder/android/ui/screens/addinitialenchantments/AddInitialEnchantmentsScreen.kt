@@ -1,6 +1,7 @@
 package com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantments
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.twotone.Done
@@ -13,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
+import com.hamthelegend.enchantmentorder.android.ui.common.InfoCard
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
@@ -115,6 +117,15 @@ fun AddInitialEnchantments(
             )
         }
     ) {
+        item {
+            InfoCard(
+                text = stringResource(
+                    R.string.add_initial_enchantments_info,
+                    target.friendlyName.lowercase(),
+                ),
+                modifier = Modifier.fillMaxWidth().padding(4.dp),
+            )
+        }
         item {
             Target(
                 target = new(target),
