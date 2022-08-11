@@ -13,6 +13,11 @@ import java.util.*
 
 val tooManyBooks = 9
 
+/*
+ This algorithm does not get the actual best order if the target item has prior penalty.
+ TODO: This must be updated to include the target in the permutations.
+ */
+
 @JvmName("getBestOrderByEnchantments")
 fun getBestOrder(
     target: Item,

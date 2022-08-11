@@ -124,7 +124,14 @@ fun ChooseBooks(
                     R.string.choose_books_info,
                     target.type.friendlyName.lowercase(),
                 ),
-                modifier = Modifier.fillMaxWidth().padding(4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 4.dp,
+                        top = 4.dp,
+                        end = 4.dp,
+                        bottom = 0.dp
+                    ),
             )
         }
         item {

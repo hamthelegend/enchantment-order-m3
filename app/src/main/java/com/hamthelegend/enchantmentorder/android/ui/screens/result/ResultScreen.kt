@@ -106,7 +106,6 @@ fun Result(
                     .fillMaxWidth()
                     .padding(horizontal = 4.dp),
             )
-            VerticalSpacer(height = 4.dp)
         }
     }
 }

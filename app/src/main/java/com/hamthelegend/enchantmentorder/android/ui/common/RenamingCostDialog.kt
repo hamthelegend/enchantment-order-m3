@@ -1,6 +1,6 @@
-package com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantments
+package com.hamthelegend.enchantmentorder.android.ui.common
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -12,11 +12,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.composables.TextButton
+import com.hamthelegend.enchantmentorder.composables.VerticalSpacer
 import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
+import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RenamingCostDialog(
+    itemType: ItemType,
     dismiss: () -> Unit,
     confirm: (renamingCost: Int) -> Unit,
 ) {
@@ -34,15 +37,26 @@ fun RenamingCostDialog(
             Text(text = stringResource(R.string.renaming_cost))
         },
         text = {
-            TextField(
-                value = renamingCost,
-                onValueChange = { newValue ->
-                    renamingCost = newValue.toIntOrNull()?.toString() ?: ""
-                },
-                placeholder = {
-                    Text(text = "1")
-                },
-            )
+            Column {
+                InfoCard(
+                    text = stringResource(
+                        R.string.renaming_cost_info,
+                        itemType.friendlyName.lowercase(),
+                    ),
+                )
+                VerticalSpacer(height = 8.dp)
+                TextField(
+                    value = renamingCost,
+                    onValueChange = { newValue ->
+                        renamingCost =
+                            if (newValue.isBlank()) newValue
+                            else newValue.toIntOrNull()?.toString() ?: renamingCost
+                    },
+                    placeholder = {
+                        Text(text = "1")
+                    },
+                )
+            }
         },
         confirmButton = {
             TextButton(

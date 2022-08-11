@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.InfoCard
+import com.hamthelegend.enchantmentorder.android.ui.common.RenamingCostDialog
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
@@ -94,6 +95,7 @@ fun AddInitialEnchantments(
             confirm = { renamingCost ->
                 navigateToChooseBooksScreen(renamingCost)
             },
+            itemType = target,
         )
     }
 
@@ -123,7 +125,14 @@ fun AddInitialEnchantments(
                     R.string.add_initial_enchantments_info,
                     target.friendlyName.lowercase(),
                 ),
-                modifier = Modifier.fillMaxWidth().padding(4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 4.dp,
+                        top = 4.dp,
+                        end = 4.dp,
+                        bottom = 0.dp
+                    ),
             )
         }
         item {

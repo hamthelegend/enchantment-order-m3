@@ -22,7 +22,7 @@ import com.hamthelegend.enchantmentorder.android.ui.common.InfoCard
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
-import com.hamthelegend.enchantmentorder.android.ui.screens.addinitialenchantments.RenamingCostDialog
+import com.hamthelegend.enchantmentorder.android.ui.common.RenamingCostDialog
 import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksNavGraph
 import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksViewModel
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
@@ -98,6 +98,7 @@ fun AddCustomBook(
                 addCustomBook(renamingCost)
                 navigateUp()
             },
+            itemType = ItemType.EnchantedBook,
         )
     }
 
@@ -137,7 +138,12 @@ fun AddCustomBook(
                 text = "Add a custom enchanted book with one or more enchantments of varying levels.",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp),
+                    .padding(
+                        start = 4.dp,
+                        top = 4.dp,
+                        end = 4.dp,
+                        bottom = 0.dp
+                    ),
             )
         }
         item {

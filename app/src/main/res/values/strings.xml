@@ -38,6 +38,15 @@
     <string name="product">Product</string>
     <string name="info">Info</string>
     <string name="choose_target_info">Choose the item that you want to enchant.</string>
-    <string name="add_initial_enchantments_info">Select the enchantments that are already in the %1$s.</string>
+    <string name="add_initial_enchantments_info">
+        Select the enchantments that are already in the %1$s.
+        You can skip this if the %1$s has no initial enchantments.
+    </string>
     <string name="choose_books_info">Choose the enchantment books that you want to add to the %1$s.</string>
+    <string name="renaming_cost_info">
+        This is the XP cost of renaming the %1$s in an anvil.
+        You don\'t have to actually rename the %1$s;
+        you can cancel the rename after knowing the cost.
+        This is essential to calculate the best order to enchant the %1$s.
+    </string>
 </resources>
