@@ -8,7 +8,7 @@ import com.hamthelegend.enchantmentorder.domain.models.combination.CombinationOr
 import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.item.Item
-import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
+import com.hamthelegend.enchantmentorder.extensions.nextOrNull
 import java.util.*
 
 val tooManyBooks = 9
@@ -46,7 +46,8 @@ fun getBestOrder(
                 } else if (combinationOrder.totalCost < currentBestCombinationOrder.totalCost) {
                     bestCombinationOrder = combinationOrder
                 }
-            } catch (_: CombinationException) {  }
+            } catch (_: CombinationException) {
+            }
         } else {
             for (i in 0 until k) {
                 generatePermutation(items, k - 1)
@@ -65,19 +66,33 @@ fun getBestOrder(
 
 fun List<Item>.combine(edition: Edition): CombinationOrder {
     val combinations = mutableListOf<Combination>()
-    var currentItems = this
-    while (currentItems.size > 1) {
+    var items = this
+    var previousItems: List<Item>? = null
+    while (items.size > 1) {
+        val nextPreviousItems = items
+        val currentItems = items.toMutableList()
         val nextItems = mutableListOf<Item>()
-        for (index in currentItems.indices step 2) {
-            if (index + 1 <= currentItems.lastIndex) {
-                val target = currentItems[index]
-                val sacrifice = currentItems[index + 1]
-                val combinationResult = target.combineWith(sacrifice, edition)
-                combinations.add(combinationResult)
-                nextItems.add(combinationResult.product)
-            } else nextItems.add(currentItems[index])
+        while (currentItems.isNotEmpty()) {
+            val target = currentItems.removeFirst()
+            val sacrifice = currentItems.removeFirstOrNull()
+            if (sacrifice == null) {
+                nextItems.add(target)
+            } else {
+                if (
+                    target.anvilUseCount == sacrifice.anvilUseCount ||
+                            previousItems == items
+                ) {
+                    val combination = target.combineWith(sacrifice, edition)
+                    combinations.add(combination)
+                    nextItems.add(combination.product)
+                } else {
+                    nextItems.add(target)
+                    currentItems.add(0, sacrifice)
+                }
+            }
         }
-        currentItems = nextItems
+        items = nextItems
+        previousItems = nextPreviousItems
     }
     return CombinationOrder(combinations)
 }
