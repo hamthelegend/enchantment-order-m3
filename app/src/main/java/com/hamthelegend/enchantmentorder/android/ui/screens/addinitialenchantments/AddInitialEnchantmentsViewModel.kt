@@ -76,6 +76,7 @@ class AddInitialEnchantmentsViewModel @Inject constructor(
 
     fun selectDefaults() {
         initialEnchantments = target.getDefaultEnchantmentsForEdition(edition)
+        onEnchantmentTypeOnFocusChanged(null)
     }
 
     fun resetSelection() {

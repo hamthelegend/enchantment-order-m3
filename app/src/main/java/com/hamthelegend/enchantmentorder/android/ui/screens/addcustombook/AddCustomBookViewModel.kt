@@ -73,6 +73,7 @@ class AddCustomBookViewModel @Inject constructor(
 
     fun selectDefaults() {
         bookEnchantments = target.type.getDefaultEnchantmentsForEdition(edition)
+        onEnchantmentTypeOnFocusChanged(null)
     }
 
     fun resetSelection() {
