@@ -48,6 +48,8 @@ fun AddInitialEnchantmentsScreen(
         onSearchQueryChange = viewModel::onSearchQueryChange,
         target = viewModel.target,
         enchantmentTypes = viewModel.enchantmentTypes,
+        enchantmentTypeOnFocus = viewModel.enchantmentTypeOnFocus,
+        onEnchantmentTypeOnFocusChanged = viewModel::onEnchantmentTypeOnFocusChanged,
         initialEnchantments = viewModel.initialEnchantments,
         addInitialEnchantment = viewModel::addInitialEnchantment,
         removeInitialEnchantment = viewModel::removeInitialEnchantment,
@@ -79,6 +81,8 @@ fun AddInitialEnchantments(
     onSearchQueryChange: (newQuery: String) -> Unit,
     target: ItemType,
     enchantmentTypes: List<EnchantmentType>,
+    enchantmentTypeOnFocus: EnchantmentType?,
+    onEnchantmentTypeOnFocusChanged: (newEnchantmentTypeOnFocus: EnchantmentType?) -> Unit,
     initialEnchantments: List<Enchantment>,
     addInitialEnchantment: (Enchantment) -> Unit,
     removeInitialEnchantment: (Enchantment) -> Unit,
@@ -89,6 +93,7 @@ fun AddInitialEnchantments(
     hideRenamingCostDialog: () -> Unit,
     navigateToChooseBooksScreen: (renamingCost: Int) -> Unit,
 ) {
+
     if (renamingCostDialogVisible) {
         RenamingCostDialog(
             dismiss = hideRenamingCostDialog,
@@ -145,10 +150,12 @@ fun AddInitialEnchantments(
             )
         }
         itemsForEnchantmentPicker(
-            enchantmentTypes,
-            initialEnchantments,
-            addInitialEnchantment,
-            removeInitialEnchantment,
+            enchantmentTypes = enchantmentTypes,
+            selectedEnchantments = initialEnchantments,
+            enchantmentTypeOnFocus = enchantmentTypeOnFocus,
+            onEnchantmentTypeOnFocusChanged = onEnchantmentTypeOnFocusChanged,
+            selectEnchantment = addInitialEnchantment,
+            deselectEnchantment = removeInitialEnchantment,
         )
     }
 }
@@ -162,6 +169,7 @@ fun AddInitialEnchantmentsPreview() {
         var searchQuery by rememberMutableStateOf(value = "")
         val target = ItemType.Pickaxe
         var enchantmentTypes by rememberMutableStateOf(value = target.compatibleEnchantmentTypes.toList())
+        var enchantmentTypeOnFocus: EnchantmentType? by rememberMutableStateOf(value = null)
         var initialEnchantments by rememberMutableStateOf(value = emptyList<Enchantment>())
         var renamingCostDialogVisible by rememberMutableStateOf(value = false)
 
@@ -181,6 +189,8 @@ fun AddInitialEnchantmentsPreview() {
             },
             target = ItemType.Pickaxe,
             enchantmentTypes = enchantmentTypes,
+            enchantmentTypeOnFocus = enchantmentTypeOnFocus,
+            onEnchantmentTypeOnFocusChanged = { enchantmentTypeOnFocus = it },
             initialEnchantments = initialEnchantments,
             addInitialEnchantment = {
                 initialEnchantments += it

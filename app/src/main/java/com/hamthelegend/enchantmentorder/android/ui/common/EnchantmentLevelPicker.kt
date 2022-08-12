@@ -25,12 +25,15 @@ import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
 import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
 import com.hamthelegend.enchantmentorder.extensions.toRomanNumerals
+import kotlinx.coroutines.selects.select
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnchantmentLevelPicker(
     enchantmentType: EnchantmentType,
     level: Int?,
+    pickingLevel: Boolean,
+    onPickingLevelChanged: (newPickingLevel: Boolean) -> Unit,
     select: (Enchantment) -> Unit,
     deselect: (Enchantment) -> Unit,
     modifier: Modifier = Modifier,
@@ -38,7 +41,6 @@ fun EnchantmentLevelPicker(
     bottomActive: Boolean = false,
 ) {
     val active = level != null
-    var pickingLevel by rememberMutableStateOf(value = false)
 
     val topCornerRadius by animateDpAsState(
         targetValue = when {
@@ -84,7 +86,7 @@ fun EnchantmentLevelPicker(
                 if (enchantmentType.maxLevel == 1) {
                     select(Enchantment(enchantmentType))
                 } else {
-                    pickingLevel = !pickingLevel
+                    onPickingLevelChanged(!pickingLevel)
                 }
             } else {
                 deselect(Enchantment(enchantmentType, level))
@@ -121,7 +123,7 @@ fun EnchantmentLevelPicker(
                     Button(
                         onClick = {
                             select(Enchantment(enchantmentType, pickableLevel))
-                            pickingLevel = false
+                            onPickingLevelChanged(false)
                         },
                         text = pickableLevel.toRomanNumerals(),
                         modifier = Modifier.weight(1f),
@@ -137,9 +139,10 @@ fun EnchantmentLevelPicker(
 fun EnchantmentLevelPickerPreview() {
     EnchantmentOrderTheme {
         var level: Int? by rememberMutableStateOf(value = null)
+        var pickingLevel by rememberMutableStateOf(value = false)
 
         EnchantmentLevelPicker(
-            enchantmentType = EnchantmentType.Mending,
+            enchantmentType = EnchantmentType.Protection,
             level = level,
             select = { enchantment ->
                 level = enchantment.level
@@ -148,6 +151,8 @@ fun EnchantmentLevelPickerPreview() {
                 level = null
             },
             modifier = Modifier.fillMaxWidth(),
+            pickingLevel = pickingLevel,
+            onPickingLevelChanged = { pickingLevel = it }
         )
     }
 }

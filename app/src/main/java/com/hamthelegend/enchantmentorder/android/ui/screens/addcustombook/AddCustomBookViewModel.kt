@@ -9,7 +9,6 @@ import com.hamthelegend.enchantmentorder.android.ui.screens.navArgs
 import com.hamthelegend.enchantmentorder.domain.extensions.*
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
-import com.hamthelegend.enchantmentorder.domain.models.item.Item
 import com.hamthelegend.enchantmentorder.extensions.search
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -35,6 +34,9 @@ class AddCustomBookViewModel @Inject constructor(
 
     var enchantmentTypes by mutableStateOf(EnchantmentType.values().forEdition(edition))
 
+    var enchantmentTypeOnFocus: EnchantmentType? by mutableStateOf(null)
+        private set
+
     private var _bookEnchantments by mutableStateOf(listOf<Enchantment>())
     var bookEnchantments
         get() = _bookEnchantments
@@ -57,6 +59,10 @@ class AddCustomBookViewModel @Inject constructor(
         searchQuery = newQuery
     }
 
+    fun onEnchantmentTypeOnFocusChanged(enchantmentType: EnchantmentType?) {
+        enchantmentTypeOnFocus = enchantmentType
+    }
+
     fun addBookEnchantment(enchantment: Enchantment) {
         bookEnchantments += enchantment
     }
@@ -71,6 +77,7 @@ class AddCustomBookViewModel @Inject constructor(
 
     fun resetSelection() {
         bookEnchantments = emptyList()
+        onEnchantmentTypeOnFocusChanged(null)
     }
 
     fun compileCustomBook(renamingCost: Int = 1) = enchantedBook(

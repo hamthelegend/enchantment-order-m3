@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +26,7 @@ import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBo
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.FloatingActionButton
+import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 import com.hamthelegend.enchantmentorder.domain.extensions.new
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
@@ -51,6 +50,8 @@ fun AddCustomBookScreen(
         onSearchQueryChange = viewModel::onSearchQueryChange,
         target = viewModel.target,
         enchantmentTypes = viewModel.enchantmentTypes,
+        enchantmentTypeOnFocus = viewModel.enchantmentTypeOnFocus,
+        onEnchantmentTypeOnFocusChanged = viewModel::onEnchantmentTypeOnFocusChanged,
         bookEnchantments = viewModel.bookEnchantments,
         addBookEnchantment = viewModel::addBookEnchantment,
         removeBookEnchantment = viewModel::removeBookEnchantment,
@@ -76,6 +77,8 @@ fun AddCustomBook(
     onSearchQueryChange: (newQuery: String) -> Unit,
     target: Item,
     enchantmentTypes: List<EnchantmentType>,
+    enchantmentTypeOnFocus: EnchantmentType?,
+    onEnchantmentTypeOnFocusChanged: (newEnchantmentTypeOnFocus: EnchantmentType?) -> Unit,
     bookEnchantments: List<Enchantment>,
     addBookEnchantment: (Enchantment) -> Unit,
     removeBookEnchantment: (Enchantment) -> Unit,
@@ -158,6 +161,8 @@ fun AddCustomBook(
         itemsForEnchantmentPicker(
             enchantmentTypes = enchantmentTypes,
             selectedEnchantments = bookEnchantments,
+            enchantmentTypeOnFocus = enchantmentTypeOnFocus,
+            onEnchantmentTypeOnFocusChanged = onEnchantmentTypeOnFocusChanged,
             selectEnchantment = addBookEnchantment,
             deselectEnchantment = removeBookEnchantment,
         )
@@ -168,12 +173,16 @@ fun AddCustomBook(
 @Composable
 fun AddCustomBookScreenPreview() {
     EnchantmentOrderTheme {
+        var enchantmentTypeOnFocus: EnchantmentType? by rememberMutableStateOf(value = null)
+
         AddCustomBook(
             navigateUp = {},
             searchQuery = "",
             onSearchQueryChange = {},
             target = new(ItemType.Pickaxe),
             enchantmentTypes = ItemType.Pickaxe.compatibleEnchantmentTypes.toList(),
+            enchantmentTypeOnFocus = enchantmentTypeOnFocus,
+            onEnchantmentTypeOnFocusChanged = { enchantmentTypeOnFocus = it },
             bookEnchantments = emptyList(),
             addBookEnchantment = {},
             removeBookEnchantment = {},

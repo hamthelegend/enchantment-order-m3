@@ -10,6 +10,7 @@ import com.hamthelegend.enchantmentorder.domain.extensions.forEdition
 import com.hamthelegend.enchantmentorder.domain.extensions.getDefaultEnchantmentsForEdition
 import com.hamthelegend.enchantmentorder.domain.extensions.removeIncompatibleWith
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
+import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
 import com.hamthelegend.enchantmentorder.extensions.search
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -36,6 +37,9 @@ class AddInitialEnchantmentsViewModel @Inject constructor(
     var enchantmentTypes by mutableStateOf(target.compatibleEnchantmentTypes.forEdition(edition))
         private set
 
+    var enchantmentTypeOnFocus: EnchantmentType? by mutableStateOf(null)
+        private set
+
     private var _initialEnchantments by mutableStateOf(emptyList<Enchantment>())
     var initialEnchantments
         get() = _initialEnchantments
@@ -58,6 +62,10 @@ class AddInitialEnchantmentsViewModel @Inject constructor(
         searchQuery = newQuery
     }
 
+    fun onEnchantmentTypeOnFocusChanged(enchantmentType: EnchantmentType?) {
+        enchantmentTypeOnFocus = enchantmentType
+    }
+
     fun addInitialEnchantment(enchantment: Enchantment) {
         initialEnchantments += enchantment
     }
@@ -72,6 +80,7 @@ class AddInitialEnchantmentsViewModel @Inject constructor(
 
     fun resetSelection() {
         initialEnchantments = emptyList()
+        onEnchantmentTypeOnFocusChanged(null)
     }
 
     fun showRenamingCostDialog() {
