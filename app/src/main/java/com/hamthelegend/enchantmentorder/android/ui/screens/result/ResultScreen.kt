@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
-import com.hamthelegend.enchantmentorder.android.showInterstitialAd
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreenWithPlaceholder
+import com.hamthelegend.enchantmentorder.android.ui.screens.InterstitialAdViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
@@ -45,11 +45,14 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun ResultScreen(
     navigator: DestinationsNavigator,
     subscriptionViewModel: SubscriptionViewModel,
+    interstitialAdViewModel: InterstitialAdViewModel,
     viewModel: ResultViewModel = hiltViewModel(),
 ) {
     Result(
         navigateUp = navigator::navigateUp,
         premium = subscriptionViewModel.premium ?: false,
+        loadInterstitialAd = interstitialAdViewModel::loadInterstitialAd,
+        showInterstitialAd = interstitialAdViewModel::showInterstitialAd,
         combinationOrder = viewModel.combinationOrder,
         compact = viewModel.compact,
         toggleCompact = viewModel::toggleCompact
@@ -61,12 +64,12 @@ fun ResultScreen(
 fun Result(
     navigateUp: () -> Unit,
     premium: Boolean,
+    loadInterstitialAd: () -> Unit,
+    showInterstitialAd: () -> Unit,
     combinationOrder: CombinationOrder?,
     compact: Boolean,
     toggleCompact: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     LazyColumnScreenWithPlaceholder(
         title = stringResource(R.string.result),
         navigateUp = navigateUp,
@@ -127,7 +130,8 @@ fun Result(
         }
     }
     LaunchedEffect(Unit) {
-        context.showInterstitialAd()
+        showInterstitialAd()
+        loadInterstitialAd()
     }
 }
 
@@ -148,6 +152,8 @@ fun ResultPreview() {
         Result(
             navigateUp = {},
             premium = false,
+            loadInterstitialAd = {},
+            showInterstitialAd = {},
             combinationOrder = combinationOrder,
             compact = compact,
             toggleCompact = { compact = !compact }

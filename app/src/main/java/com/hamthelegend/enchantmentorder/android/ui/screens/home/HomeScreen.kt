@@ -5,6 +5,7 @@ import androidx.compose.material.icons.twotone.DesktopMac
 import androidx.compose.material.icons.twotone.Devices
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -15,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
+import com.hamthelegend.enchantmentorder.android.ui.screens.InterstitialAdViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseTargetScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
@@ -32,10 +34,12 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun HomeScreen(
     navigator: DestinationsNavigator,
     subscriptionViewModel: SubscriptionViewModel,
+    interstitialAdViewModel: InterstitialAdViewModel,
 ) {
     Home(
         premium = subscriptionViewModel.premium ?: false,
         purchasePremium = subscriptionViewModel::purchase,
+        loadInterstitialAd = interstitialAdViewModel::loadInterstitialAd,
         navigateToChooseTargetScreen = { edition ->
             navigator.navigate(ChooseTargetScreenDestination(edition))
         },
@@ -47,6 +51,7 @@ fun HomeScreen(
 fun Home(
     premium: Boolean,
     purchasePremium: () -> Unit,
+    loadInterstitialAd: () -> Unit,
     navigateToChooseTargetScreen: (Edition) -> Unit,
 ) {
     Screen(showAd = !premium) {
@@ -137,6 +142,9 @@ fun Home(
             }
         }
     }
+    LaunchedEffect(Unit) {
+        if (!premium) loadInterstitialAd()
+    }
 }
 
 @Preview
@@ -147,6 +155,7 @@ fun HomeScreenPreview() {
             premium = false,
             purchasePremium = {},
             navigateToChooseTargetScreen = {},
+            loadInterstitialAd = {},
         )
     }
 }

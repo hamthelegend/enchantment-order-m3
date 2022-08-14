@@ -24,8 +24,6 @@ class MainActivity : ComponentActivity() {
 
         (application as EnchantmentOrderApplication).mainActivity = this
 
-        loadInterstitialAd()
-
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {

@@ -14,9 +14,11 @@ import androidx.compose.material.icons.twotone.Done
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +26,7 @@ import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.InfoCard
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
+import com.hamthelegend.enchantmentorder.android.ui.screens.InterstitialAdViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddCustomBookScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ResultScreenDestination
@@ -48,6 +51,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 fun ChooseBooksScreen(
     navigator: DestinationsNavigator,
     subscriptionViewModel: SubscriptionViewModel,
+    interstitialAdViewModel: InterstitialAdViewModel,
     viewModel: ChooseBooksViewModel,
 ) {
     ChooseBooks(
@@ -55,6 +59,7 @@ fun ChooseBooksScreen(
         searchQuery = viewModel.searchQuery,
         onSearchQueryChange = viewModel::onSearchQueryChange,
         premium = subscriptionViewModel.premium ?: false,
+        loadInterstitialAd = interstitialAdViewModel::loadInterstitialAd,
         target = viewModel.target,
         customBooks = viewModel.customBooks,
         maxSoloEnchantments = viewModel.maxSoloEnchantments,
@@ -88,6 +93,7 @@ fun ChooseBooks(
     searchQuery: String,
     onSearchQueryChange: (newQuery: String) -> Unit,
     premium: Boolean,
+    loadInterstitialAd: () -> Unit,
     target: Item,
     customBooks: List<Item>,
     maxSoloEnchantments: List<Enchantment>,
@@ -222,6 +228,9 @@ fun ChooseBooks(
             )
         }
     }
+    LaunchedEffect(Unit) {
+        if (!premium) loadInterstitialAd()
+    }
 }
 
 @Preview
@@ -252,6 +261,7 @@ fun ChooseBooksPreview() {
                 searchQuery = newQuery
             },
             premium = false,
+            loadInterstitialAd = {},
             target = target,
             customBooks = customBooks,
             maxSoloEnchantments = maxSoloEnchantments,

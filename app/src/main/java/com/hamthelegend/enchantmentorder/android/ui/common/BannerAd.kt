@@ -27,7 +27,7 @@ fun BannerAd(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(horizontal = 2.dp, vertical = 6.dp),
         textAlign = TextAlign.Center,
-        text = stringResource(R.string.ad_here),
+        text = stringResource(R.string.loading_ad),
         style = MaterialTheme.typography.bodySmall,
     )
     if (!isInEditMode) {

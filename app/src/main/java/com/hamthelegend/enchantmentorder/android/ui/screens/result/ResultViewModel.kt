@@ -40,6 +40,7 @@ class ResultViewModel @Inject constructor(
                 val _combinationOrder = getBestOrder(target, books, edition)
                 withContext(Dispatchers.Main) {
                     combinationOrder = _combinationOrder
+
                 }
             }
         }

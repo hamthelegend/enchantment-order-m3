@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.hamthelegend.enchantmentorder.android.ui.screens.InterstitialAdViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.NavGraphs
 import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksViewModel
@@ -32,6 +33,7 @@ fun NavHost(activity: Activity) {
                 }
                 hiltViewModel<ChooseBooksViewModel>(parentEntry)
             }
+            dependency(hiltViewModel<InterstitialAdViewModel>(activity as ViewModelStoreOwner))
             dependency(hiltViewModel<SubscriptionViewModel>(activity as ViewModelStoreOwner))
         }
     )

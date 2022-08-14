@@ -15,34 +15,3 @@ const val MyInterstitialAdUnitId = "ca-app-pub-4910427575758293/9405723634"
 
 const val ActiveBannerAdUnitId = MyBannerAdUnitId
 const val ActiveInterstitialAdUnitId = MyInterstitialAdUnitId
-
-var interstitialAd: InterstitialAd? = null
-
-fun Context.loadInterstitialAd() {
-    InterstitialAd.load(
-        this,
-        ActiveInterstitialAdUnitId,
-        AdRequest.Builder().build(),
-        object : InterstitialAdLoadCallback() {
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                interstitialAd = null
-                Log.d("MainActivity", adError.message)
-            }
-
-            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                com.hamthelegend.enchantmentorder.android.interstitialAd = interstitialAd
-                Log.d("MainActivity", "Ad was loaded.")
-            }
-        }
-    )
-}
-
-fun Context.showInterstitialAd() {
-    val activity = this as MainActivity
-
-    if (interstitialAd != null) {
-        interstitialAd?.show(activity)
-    } else {
-        Log.d("MainActivity", "The interstitial ad wasn't ready yet.")
-    }
-}
