@@ -15,11 +15,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.hamthelegend.enchantmentorder.android.ActiveBannerAdUnitId
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
-
-const val TestAdUnitId = "ca-app-pub-3940256099942544/6300978111"
-const val MyAdUnitId = "ca-app-pub-4910427575758293/8515776813"
 
 @Composable
 fun BannerAd(modifier: Modifier = Modifier) {
@@ -38,7 +36,7 @@ fun BannerAd(modifier: Modifier = Modifier) {
             factory = { context ->
                 AdView(context).apply {
                     setAdSize(AdSize.BANNER)
-                    adUnitId = TestAdUnitId
+                    adUnitId = ActiveBannerAdUnitId
                     loadAd(AdRequest.Builder().build())
                 }
             }

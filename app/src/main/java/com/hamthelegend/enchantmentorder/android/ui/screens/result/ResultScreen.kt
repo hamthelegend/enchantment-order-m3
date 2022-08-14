@@ -12,18 +12,16 @@ import androidx.compose.material.icons.twotone.UnfoldMore
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
-import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
+import com.hamthelegend.enchantmentorder.android.showInterstitialAd
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreenWithPlaceholder
 import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
@@ -41,7 +39,6 @@ import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentTy
 import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator.navigateUp
 
 @Destination(navArgsDelegate = ResultNavArgs::class)
 @Composable
@@ -68,6 +65,8 @@ fun Result(
     compact: Boolean,
     toggleCompact: () -> Unit,
 ) {
+    val context = LocalContext.current
+
     LazyColumnScreenWithPlaceholder(
         title = stringResource(R.string.result),
         navigateUp = navigateUp,
@@ -126,6 +125,9 @@ fun Result(
             )
             VerticalSpacer(height = 4.dp)
         }
+    }
+    LaunchedEffect(Unit) {
+        context.showInterstitialAd()
     }
 }
 
