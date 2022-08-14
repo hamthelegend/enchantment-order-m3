@@ -49,4 +49,6 @@
         you can cancel the rename after knowing the cost.
         This is essential to calculate the best order to enchant the %1$s.
     </string>
+    <string name="remove_ads">Remove ads</string>
+    <string name="ad_here">Ad here</string>
 </resources>

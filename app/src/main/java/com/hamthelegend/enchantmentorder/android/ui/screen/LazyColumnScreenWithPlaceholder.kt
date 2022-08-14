@@ -22,11 +22,12 @@ fun LazyColumnScreenWithPlaceholder(
     placeholder: @Composable (modifier: Modifier) -> Unit,
     usePlaceholder: Boolean,
     modifier: Modifier = Modifier,
+    showAd: Boolean = false,
     navigateUp: (() -> Unit)? = null,
     searchQuery: String? = null,
     onSearchQueryChange: (newQuery: String) -> Unit = {},
     otherActions: @Composable RowScope.() -> Unit = {},
-    floatingActionButton: @Composable () -> Unit = {},
+    floatingActionButton: @Composable (Modifier) -> Unit = {},
     lazyColumnState: LazyListState = rememberLazyListState(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     content: LazyListScope.() -> Unit,
@@ -39,6 +40,7 @@ fun LazyColumnScreenWithPlaceholder(
     Screen(
         title = title,
         modifier = modifier,
+        showAd = showAd,
         navigateUp = navigateUp,
         searchQuery = searchQuery,
         onSearchQueryChange = onSearchQueryChange,
@@ -51,10 +53,13 @@ fun LazyColumnScreenWithPlaceholder(
             if (_usePlaceholder) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     placeholder(modifier.weight(1f))
-                    Spacer(modifier = Modifier.navigationBarsPadding())
+                    Spacer(modifier = if (showAd) Modifier else Modifier.navigationBarsPadding())
                 }
             } else {
-                FullScreenLazyColumn(state = lazyColumnState) {
+                FullScreenLazyColumn(
+                    state = lazyColumnState,
+                    hasContentBelow = showAd,
+                ) {
                     content()
                 }
             }

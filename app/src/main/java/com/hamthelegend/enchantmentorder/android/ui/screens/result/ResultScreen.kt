@@ -13,18 +13,32 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreenWithPlaceholder
+import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
+import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.IconButton
 import com.hamthelegend.enchantmentorder.composables.VerticalSpacer
+import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
+import com.hamthelegend.enchantmentorder.domain.extensions.combineWith
+import com.hamthelegend.enchantmentorder.domain.extensions.enchantedBook
+import com.hamthelegend.enchantmentorder.domain.extensions.new
 import com.hamthelegend.enchantmentorder.domain.models.combination.CombinationOrder
+import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
+import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
+import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
+import com.hamthelegend.enchantmentorder.domain.models.item.ItemType
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator.navigateUp
@@ -33,10 +47,12 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator.na
 @Composable
 fun ResultScreen(
     navigator: DestinationsNavigator,
+    subscriptionViewModel: SubscriptionViewModel,
     viewModel: ResultViewModel = hiltViewModel(),
 ) {
     Result(
         navigateUp = navigator::navigateUp,
+        premium = subscriptionViewModel.premium ?: false,
         combinationOrder = viewModel.combinationOrder,
         compact = viewModel.compact,
         toggleCompact = viewModel::toggleCompact
@@ -47,6 +63,7 @@ fun ResultScreen(
 @Composable
 fun Result(
     navigateUp: () -> Unit,
+    premium: Boolean,
     combinationOrder: CombinationOrder?,
     compact: Boolean,
     toggleCompact: () -> Unit,
@@ -54,6 +71,7 @@ fun Result(
     LazyColumnScreenWithPlaceholder(
         title = stringResource(R.string.result),
         navigateUp = navigateUp,
+        showAd = !premium,
         placeholder = { modifier ->
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -106,6 +124,31 @@ fun Result(
                     .fillMaxWidth()
                     .padding(horizontal = 4.dp),
             )
+            VerticalSpacer(height = 4.dp)
         }
+    }
+}
+
+@Preview
+@Composable
+fun ResultPreview() {
+    EnchantmentOrderTheme {
+        val combinationOrder = remember {
+            CombinationOrder(
+                combinations = listOf(
+                    new(ItemType.Pickaxe)
+                        .combineWith(enchantedBook(Enchantment(EnchantmentType.Mending)), Edition.Java)),
+            )
+        }
+
+        var compact by rememberMutableStateOf(value = false)
+
+        Result(
+            navigateUp = {},
+            premium = false,
+            combinationOrder = combinationOrder,
+            compact = compact,
+            toggleCompact = { compact = !compact }
+        )
     }
 }

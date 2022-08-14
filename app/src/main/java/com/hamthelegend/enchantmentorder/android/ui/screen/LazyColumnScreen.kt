@@ -16,10 +16,11 @@ import kotlinx.serialization.json.JsonNull.content
 fun LazyColumnScreen(
     title: String,
     modifier: Modifier = Modifier,
+    showAd: Boolean = false,
     navigateUp: (() -> Unit)? = null,
     searchQuery: String? = null,
     onSearchQueryChange: (newQuery: String) -> Unit = {},
-    floatingActionButton: @Composable () -> Unit = {},
+    floatingActionButton: @Composable (Modifier) -> Unit = {},
     lazyColumnState: LazyListState = rememberLazyListState(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     content: LazyListScope.() -> Unit,
@@ -32,6 +33,7 @@ fun LazyColumnScreen(
     Screen(
         title = title,
         modifier = modifier,
+        showAd = showAd,
         navigateUp = navigateUp,
         searchQuery = searchQuery,
         onSearchQueryChange = onSearchQueryChange,
@@ -39,7 +41,10 @@ fun LazyColumnScreen(
         snackbarHostState = snackbarHostState,
         scrolled = scrolled,
     ) {
-        FullScreenLazyColumn(state = lazyColumnState) {
+        FullScreenLazyColumn(
+            state = lazyColumnState,
+            hasContentBelow = showAd,
+        ) {
             content()
         }
     }

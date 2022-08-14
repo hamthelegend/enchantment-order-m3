@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.twotone.Add
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,11 +22,13 @@ import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
 import com.hamthelegend.enchantmentorder.android.ui.common.RenamingCostDialog
+import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksNavGraph
 import com.hamthelegend.enchantmentorder.android.ui.screens.choosebooks.ChooseBooksViewModel
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
 import com.hamthelegend.enchantmentorder.composables.FloatingActionButton
+import com.hamthelegend.enchantmentorder.composables.VerticalSpacer
 import com.hamthelegend.enchantmentorder.composables.rememberMutableStateOf
 import com.hamthelegend.enchantmentorder.domain.extensions.new
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
@@ -42,12 +45,14 @@ import kotlinx.coroutines.launch
 fun AddCustomBookScreen(
     navigator: DestinationsNavigator,
     chooseBooksViewModel: ChooseBooksViewModel,
+    subscriptionViewModel: SubscriptionViewModel,
     viewModel: AddCustomBookViewModel = hiltViewModel(),
 ) {
     AddCustomBook(
         navigateUp = navigator::navigateUp,
         searchQuery = viewModel.searchQuery,
         onSearchQueryChange = viewModel::onSearchQueryChange,
+        premium = subscriptionViewModel.premium ?: false,
         target = viewModel.target,
         enchantmentTypes = viewModel.enchantmentTypes,
         enchantmentTypeOnFocus = viewModel.enchantmentTypeOnFocus,
@@ -75,6 +80,7 @@ fun AddCustomBook(
     navigateUp: () -> Unit,
     searchQuery: String,
     onSearchQueryChange: (newQuery: String) -> Unit,
+    premium: Boolean,
     target: Item,
     enchantmentTypes: List<EnchantmentType>,
     enchantmentTypeOnFocus: EnchantmentType?,
@@ -110,8 +116,9 @@ fun AddCustomBook(
         navigateUp = navigateUp,
         searchQuery = searchQuery,
         onSearchQueryChange = onSearchQueryChange,
+        showAd = !premium,
         snackbarHostState = snackbarHostState,
-        floatingActionButton = {
+        floatingActionButton = { modifier ->
             val fabVisible = bookEnchantments.isNotEmpty()
 
             AnimatedVisibility(
@@ -131,7 +138,7 @@ fun AddCustomBook(
                     },
                     imageVector = ThemeIcons.Add,
                     contentDescription = stringResource(R.string.add),
-                    modifier = Modifier.navigationBarsPadding(),
+                    modifier = modifier,
                 )
             }
         }
@@ -179,6 +186,7 @@ fun AddCustomBookScreenPreview() {
             navigateUp = {},
             searchQuery = "",
             onSearchQueryChange = {},
+            premium = false,
             target = new(ItemType.Pickaxe),
             enchantmentTypes = ItemType.Pickaxe.compatibleEnchantmentTypes.toList(),
             enchantmentTypeOnFocus = enchantmentTypeOnFocus,

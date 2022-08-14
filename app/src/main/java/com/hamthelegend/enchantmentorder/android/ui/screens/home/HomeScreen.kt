@@ -1,9 +1,7 @@
 package com.hamthelegend.enchantmentorder.android.ui.screens.home
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.twotone.DesktopMac
-import androidx.compose.material.icons.twotone.DesktopWindows
 import androidx.compose.material.icons.twotone.Devices
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,11 +15,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.screen.Screen
-import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseEditionScreenDestination
+import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseTargetScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
-import com.hamthelegend.enchantmentorder.composables.IconTextCard
+import com.hamthelegend.enchantmentorder.composables.TextButton
 import com.hamthelegend.enchantmentorder.composables.VerticalSpacer
 import com.hamthelegend.enchantmentorder.domain.models.edition.Edition
 import com.ramcosta.composedestinations.annotation.Destination
@@ -33,8 +31,11 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun HomeScreen(
     navigator: DestinationsNavigator,
+    subscriptionViewModel: SubscriptionViewModel,
 ) {
     Home(
+        premium = subscriptionViewModel.premium ?: false,
+        purchasePremium = subscriptionViewModel::purchase,
         navigateToChooseTargetScreen = { edition ->
             navigator.navigate(ChooseTargetScreenDestination(edition))
         },
@@ -44,9 +45,11 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
+    premium: Boolean,
+    purchasePremium: () -> Unit,
     navigateToChooseTargetScreen: (Edition) -> Unit,
 ) {
-    Screen {
+    Screen(showAd = !premium) {
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize(),
@@ -122,6 +125,16 @@ fun Home(
                     )
                 }
             }
+            if (!premium) {
+                VerticalSpacer(height = 16.dp)
+                TextButton(
+                    onClick = purchasePremium,
+                    text = stringResource(R.string.remove_ads),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp),
+                )
+            }
         }
     }
 }
@@ -131,8 +144,9 @@ fun Home(
 fun HomeScreenPreview() {
     EnchantmentOrderTheme {
         Home(
+            premium = false,
+            purchasePremium = {},
             navigateToChooseTargetScreen = {},
-//            navigateToSavedEnchantmentsScreen = {},
         )
     }
 }

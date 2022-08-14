@@ -24,6 +24,7 @@ import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.InfoCard
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
+import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddCustomBookScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ResultScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
@@ -46,12 +47,14 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun ChooseBooksScreen(
     navigator: DestinationsNavigator,
+    subscriptionViewModel: SubscriptionViewModel,
     viewModel: ChooseBooksViewModel,
 ) {
     ChooseBooks(
         navigateUp = navigator::navigateUp,
         searchQuery = viewModel.searchQuery,
         onSearchQueryChange = viewModel::onSearchQueryChange,
+        premium = subscriptionViewModel.premium ?: false,
         target = viewModel.target,
         customBooks = viewModel.customBooks,
         maxSoloEnchantments = viewModel.maxSoloEnchantments,
@@ -84,6 +87,7 @@ fun ChooseBooks(
     navigateUp: () -> Unit,
     searchQuery: String,
     onSearchQueryChange: (newQuery: String) -> Unit,
+    premium: Boolean,
     target: Item,
     customBooks: List<Item>,
     maxSoloEnchantments: List<Enchantment>,
@@ -100,7 +104,8 @@ fun ChooseBooks(
         navigateUp = navigateUp,
         searchQuery = searchQuery,
         onSearchQueryChange = onSearchQueryChange,
-        floatingActionButton = {
+        showAd = !premium,
+        floatingActionButton = { modifier ->
             val fabVisible =
                 selectedMaxSoloEnchantments.isNotEmpty() || customBooks.isNotEmpty()
 
@@ -113,7 +118,7 @@ fun ChooseBooks(
                     onClick = navigateToResultScreen,
                     imageVector = ThemeIcons.Done,
                     contentDescription = stringResource(id = R.string.done),
-                    modifier = Modifier.navigationBarsPadding(),
+                    modifier = modifier.navigationBarsPadding(),
                 )
             }
         }
@@ -246,6 +251,7 @@ fun ChooseBooksPreview() {
             onSearchQueryChange = { newQuery ->
                 searchQuery = newQuery
             },
+            premium = false,
             target = target,
             customBooks = customBooks,
             maxSoloEnchantments = maxSoloEnchantments,

@@ -17,6 +17,7 @@ import com.hamthelegend.enchantmentorder.android.R
 import com.hamthelegend.enchantmentorder.android.ui.common.InfoCard
 import com.hamthelegend.enchantmentorder.android.ui.res.imageResId
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
+import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.AddInitialEnchantmentsScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
@@ -30,6 +31,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun ChooseTargetScreen(
     navigator: DestinationsNavigator,
+    subscriptionViewModel: SubscriptionViewModel,
     viewModel: ChooseTargetViewModel = hiltViewModel(),
 ) {
 
@@ -37,6 +39,7 @@ fun ChooseTargetScreen(
         navigateUp = navigator::navigateUp,
         searchQuery = viewModel.searchQuery,
         onSearchQueryChange = viewModel::onSearchQueryChange,
+        premium = subscriptionViewModel.premium ?: false,
         targets = viewModel.targets,
         navigateToAddInitialEnchantmentsScreen = { target ->
             navigator.navigate(
@@ -56,6 +59,7 @@ fun ChooseTarget(
     navigateUp: () -> Unit,
     searchQuery: String,
     onSearchQueryChange: (newQuery: String) -> Unit,
+    premium: Boolean,
     targets: List<ItemType>,
     navigateToAddInitialEnchantmentsScreen: (target: ItemType) -> Unit,
 ) {
@@ -64,6 +68,7 @@ fun ChooseTarget(
         navigateUp = navigateUp,
         searchQuery = searchQuery,
         onSearchQueryChange = onSearchQueryChange,
+        showAd = !premium,
     ) {
         item {
             InfoCard(
@@ -99,6 +104,7 @@ fun ChooseTargetPreview() {
             navigateUp = {},
             searchQuery = searchQuery,
             onSearchQueryChange = { searchQuery = it },
+            premium = false,
             targets = targets,
             navigateToAddInitialEnchantmentsScreen = {},
         )

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.twotone.Done
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -19,6 +20,7 @@ import com.hamthelegend.enchantmentorder.android.ui.common.RenamingCostDialog
 import com.hamthelegend.enchantmentorder.android.ui.common.Target
 import com.hamthelegend.enchantmentorder.android.ui.common.itemsForEnchantmentPicker
 import com.hamthelegend.enchantmentorder.android.ui.screen.LazyColumnScreen
+import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.destinations.ChooseBooksScreenDestination
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import com.hamthelegend.enchantmentorder.android.ui.theme.ThemeIcons
@@ -40,12 +42,14 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun AddInitialEnchantmentsScreen(
     navigator: DestinationsNavigator,
+    subscriptionViewModel: SubscriptionViewModel,
     viewModel: AddInitialEnchantmentsViewModel = hiltViewModel(),
 ) {
     AddInitialEnchantments(
         navigateUp = navigator::navigateUp,
         searchQuery = viewModel.searchQuery,
         onSearchQueryChange = viewModel::onSearchQueryChange,
+        premium = subscriptionViewModel.premium ?: false,
         target = viewModel.target,
         enchantmentTypes = viewModel.enchantmentTypes,
         enchantmentTypeOnFocus = viewModel.enchantmentTypeOnFocus,
@@ -79,6 +83,7 @@ fun AddInitialEnchantments(
     navigateUp: () -> Unit,
     searchQuery: String,
     onSearchQueryChange: (newQuery: String) -> Unit,
+    premium: Boolean,
     target: ItemType,
     enchantmentTypes: List<EnchantmentType>,
     enchantmentTypeOnFocus: EnchantmentType?,
@@ -109,7 +114,8 @@ fun AddInitialEnchantments(
         title = stringResource(R.string.add_initial_enchantments),
         searchQuery = searchQuery,
         onSearchQueryChange = onSearchQueryChange,
-        floatingActionButton = {
+        showAd = !premium,
+        floatingActionButton = { modifier ->
             FloatingActionButton(
                 onClick = {
                     if (initialEnchantments.isNotEmpty()) {
@@ -120,7 +126,7 @@ fun AddInitialEnchantments(
                 },
                 imageVector = ThemeIcons.Done,
                 contentDescription = stringResource(R.string.done),
-                modifier = Modifier.navigationBarsPadding(),
+                modifier = modifier.navigationBarsPadding(),
             )
         }
     ) {
@@ -187,6 +193,7 @@ fun AddInitialEnchantmentsPreview() {
                 searchQuery = it
                 refreshEnchantmentTypes()
             },
+            premium = false,
             target = ItemType.Pickaxe,
             enchantmentTypes = enchantmentTypes,
             enchantmentTypeOnFocus = enchantmentTypeOnFocus,

@@ -1,0 +1,55 @@
+package com.hamthelegend.enchantmentorder.android.ui.common
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.hamthelegend.enchantmentorder.android.R
+import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
+
+const val TestAdUnitId = "ca-app-pub-3940256099942544/6300978111"
+const val MyAdUnitId = "ca-app-pub-4910427575758293/8515776813"
+
+@Composable
+fun BannerAd(modifier: Modifier = Modifier) {
+    val isInEditMode = LocalInspectionMode.current
+    Text(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 2.dp, vertical = 6.dp),
+        textAlign = TextAlign.Center,
+        text = stringResource(R.string.ad_here),
+        style = MaterialTheme.typography.bodySmall,
+    )
+    if (!isInEditMode) {
+        AndroidView(
+            modifier = modifier.fillMaxWidth(),
+            factory = { context ->
+                AdView(context).apply {
+                    setAdSize(AdSize.BANNER)
+                    adUnitId = TestAdUnitId
+                    loadAd(AdRequest.Builder().build())
+                }
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BannerAdPreview() {
+    EnchantmentOrderTheme {
+        BannerAd()
+    }
+}

@@ -1,11 +1,9 @@
 package com.hamthelegend.enchantmentorder.composables
 
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
@@ -32,10 +30,14 @@ fun FloatingActionButton(
     imageVector: ImageVector,
     contentDescription: String?,
     modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+    contentColor: Color = contentColorFor(containerColor),
 ) {
     FloatingActionButton(
         onClick = onClick,
         modifier = modifier,
+        containerColor = containerColor,
+        contentColor = contentColor,
     ) {
         Icon(imageVector = imageVector, contentDescription = contentDescription)
     }

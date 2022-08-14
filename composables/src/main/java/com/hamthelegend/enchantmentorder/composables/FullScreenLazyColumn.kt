@@ -9,11 +9,11 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun FullScreenLazyColumn(
     modifier: Modifier = Modifier,
+    hasContentBelow: Boolean = false,
     state: LazyListState = rememberLazyListState(),
     content: LazyListScope.() -> Unit,
 ) {
@@ -22,8 +22,10 @@ fun FullScreenLazyColumn(
         state = state,
     ) {
         content()
-        item {
-            Spacer(modifier = Modifier.navigationBarsPadding())
+        if (!hasContentBelow) {
+            item {
+                Spacer(modifier = Modifier.navigationBarsPadding())
+            }
         }
     }
 }

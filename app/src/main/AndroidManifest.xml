@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.hamthelegend.enchantmentorder.android">
 
+    <uses-permission android:name="com.android.vending.BILLING" />
+
     <application
         android:name=".EnchantmentOrderApplication"
         android:allowBackup="true"
@@ -14,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EnchantmentOrder"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4910427575758293~4706176705" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
