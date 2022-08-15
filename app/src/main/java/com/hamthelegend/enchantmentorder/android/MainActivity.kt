@@ -3,6 +3,7 @@ package com.hamthelegend.enchantmentorder.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -14,12 +15,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.hamthelegend.enchantmentorder.android.ui.screens.SubscriptionViewModel
 import com.hamthelegend.enchantmentorder.android.ui.screens.navhost.NavHost
 import com.hamthelegend.enchantmentorder.android.ui.theme.EnchantmentOrderTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val subscriptionViewModel by viewModels<SubscriptionViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         (application as EnchantmentOrderApplication).mainActivity = this
@@ -43,16 +48,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavHost(this)
+                    NavHost(this, subscriptionViewModel)
                 }
             }
         }
     }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    EnchantmentOrderTheme {
+    override fun onResume() {
+        super.onResume()
+        subscriptionViewModel.onResume()
     }
 }

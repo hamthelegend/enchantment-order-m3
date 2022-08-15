@@ -18,7 +18,10 @@ import com.ramcosta.composedestinations.navigation.dependency
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
 @Composable
-fun NavHost(activity: Activity) {
+fun NavHost(
+    activity: Activity,
+    subscriptionViewModel: SubscriptionViewModel,
+) {
     val navHostEngine = rememberAnimatedNavHostEngine(
         rootDefaultAnimations = defaultTransitions,
     )
@@ -33,8 +36,8 @@ fun NavHost(activity: Activity) {
                 }
                 hiltViewModel<ChooseBooksViewModel>(parentEntry)
             }
+            dependency(subscriptionViewModel)
             dependency(hiltViewModel<InterstitialAdViewModel>(activity as ViewModelStoreOwner))
-            dependency(hiltViewModel<SubscriptionViewModel>(activity as ViewModelStoreOwner))
         }
     )
 }
