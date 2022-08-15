@@ -50,7 +50,7 @@ fun ResultScreen(
 ) {
     Result(
         navigateUp = navigator::navigateUp,
-        premium = subscriptionViewModel.premium ?: false,
+        premium = subscriptionViewModel.premium ?: true,
         loadInterstitialAd = interstitialAdViewModel::loadInterstitialAd,
         showInterstitialAd = interstitialAdViewModel::showInterstitialAd,
         combinationOrder = viewModel.combinationOrder,

@@ -37,7 +37,7 @@ fun HomeScreen(
     interstitialAdViewModel: InterstitialAdViewModel,
 ) {
     Home(
-        premium = subscriptionViewModel.premium ?: false,
+        premium = subscriptionViewModel.premium ?: true,
         purchasePremium = subscriptionViewModel::purchase,
         loadInterstitialAd = interstitialAdViewModel::loadInterstitialAd,
         navigateToChooseTargetScreen = { edition ->

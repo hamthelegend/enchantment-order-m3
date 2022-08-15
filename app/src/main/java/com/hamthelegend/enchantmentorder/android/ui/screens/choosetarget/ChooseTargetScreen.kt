@@ -39,7 +39,7 @@ fun ChooseTargetScreen(
         navigateUp = navigator::navigateUp,
         searchQuery = viewModel.searchQuery,
         onSearchQueryChange = viewModel::onSearchQueryChange,
-        premium = subscriptionViewModel.premium ?: false,
+        premium = subscriptionViewModel.premium ?: true,
         targets = viewModel.targets,
         navigateToAddInitialEnchantmentsScreen = { target ->
             navigator.navigate(

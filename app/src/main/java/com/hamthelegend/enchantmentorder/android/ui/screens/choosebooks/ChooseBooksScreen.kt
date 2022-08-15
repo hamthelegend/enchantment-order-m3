@@ -58,7 +58,7 @@ fun ChooseBooksScreen(
         navigateUp = navigator::navigateUp,
         searchQuery = viewModel.searchQuery,
         onSearchQueryChange = viewModel::onSearchQueryChange,
-        premium = subscriptionViewModel.premium ?: false,
+        premium = subscriptionViewModel.premium ?: true,
         loadInterstitialAd = interstitialAdViewModel::loadInterstitialAd,
         target = viewModel.target,
         customBooks = viewModel.customBooks,

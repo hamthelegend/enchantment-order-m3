@@ -52,7 +52,7 @@ fun AddCustomBookScreen(
         navigateUp = navigator::navigateUp,
         searchQuery = viewModel.searchQuery,
         onSearchQueryChange = viewModel::onSearchQueryChange,
-        premium = subscriptionViewModel.premium ?: false,
+        premium = subscriptionViewModel.premium ?: true,
         target = viewModel.target,
         enchantmentTypes = viewModel.enchantmentTypes,
         enchantmentTypeOnFocus = viewModel.enchantmentTypeOnFocus,
