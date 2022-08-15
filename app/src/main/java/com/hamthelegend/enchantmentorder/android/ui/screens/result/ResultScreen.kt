@@ -130,8 +130,10 @@ fun Result(
         }
     }
     LaunchedEffect(Unit) {
-        showInterstitialAd()
-        loadInterstitialAd()
+        if (!premium) {
+            showInterstitialAd()
+            loadInterstitialAd()
+        }
     }
 }
 
