@@ -14,8 +14,8 @@ android {
         applicationId "com.hamthelegend.enchantmentorder.android"
         minSdk 21
         targetSdk 32
-        versionCode 31
-        versionName "3.10"
+        versionCode 32
+        versionName "3.11"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -70,14 +70,14 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
 
     // Compose
-    implementation "androidx.compose.ui:ui:1.2.0"
-    implementation 'androidx.compose.material3:material3:1.0.0-alpha15'
-    implementation "androidx.compose.ui:ui-tooling-preview:1.2.0"
+    implementation "androidx.compose.ui:ui:1.2.1"
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha16'
+    implementation "androidx.compose.ui:ui-tooling-preview:1.2.1"
     implementation 'androidx.activity:activity-compose:1.5.1'
-    implementation "androidx.compose.material:material-icons-extended:1.2.0"
-    debugImplementation "androidx.compose.ui:ui-tooling:1.2.0"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.2.0"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:1.2.0"
+    implementation "androidx.compose.material:material-icons-extended:1.2.1"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.2.1"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.2.1"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.2.1"
     debugImplementation "androidx.customview:customview:1.2.0-alpha01"
     debugImplementation "androidx.customview:customview-poolingcontainer:1.0.0"
 
