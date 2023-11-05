@@ -1,7 +1,7 @@
 package com.hamthelegend.enchantmentorder.domain
 
-import com.hamthelegend.enchantmentorder.domain.businesslogic.anvilUseCountToCost
-import com.hamthelegend.enchantmentorder.domain.businesslogic.costToAnvilUseCount
+import com.hamthelegend.enchantmentorder.domain.extensions.anvilUseCountToCost
+import com.hamthelegend.enchantmentorder.domain.extensions.costToAnvilUseCount
 import org.junit.Test
 
 class AnvilUseCountTest {

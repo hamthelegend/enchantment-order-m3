@@ -1,10 +1,10 @@
 package com.hamthelegend.enchantmentorder.domain
 
-import com.hamthelegend.enchantmentorder.domain.businesslogic.enchantedBook
-import com.hamthelegend.enchantmentorder.domain.businesslogic.new
-import com.hamthelegend.enchantmentorder.domain.businesslogic.plus
 import com.hamthelegend.enchantmentorder.domain.exceptions.IncompatibleItemTypesException
 import com.hamthelegend.enchantmentorder.domain.exceptions.NoCompatibleEnchantmentsException
+import com.hamthelegend.enchantmentorder.domain.extensions.enchantedBook
+import com.hamthelegend.enchantmentorder.domain.extensions.new
+import com.hamthelegend.enchantmentorder.domain.extensions.plus
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.Enchantment
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType
 import com.hamthelegend.enchantmentorder.domain.models.enchantment.EnchantmentType.*
