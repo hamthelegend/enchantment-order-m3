@@ -6,12 +6,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
+enum class IconPosition {
+    Start,
+    End,
+}
+
 @Composable
 fun ElevatedButton(
     onClick: () -> Unit,
     text: String,
     modifier: Modifier = Modifier,
     iconImageVector: ImageVector? = null,
+    iconPosition: IconPosition = IconPosition.Start,
 ) {
     ElevatedButton(
         onClick = onClick,
@@ -30,15 +36,21 @@ fun Button(
     text: String,
     modifier: Modifier = Modifier,
     iconImageVector: ImageVector? = null,
+    iconPosition: IconPosition = IconPosition.Start,
 ) {
     Button(
         onClick = onClick,
         modifier = modifier,
     ) {
-        if (iconImageVector != null) {
+        if (iconImageVector != null && iconPosition == IconPosition.Start) {
             Icon(imageVector = iconImageVector, contentDescription = text)
+            HorizontalSpacer(width = 8.dp)
         }
         Text(text = text)
+        if (iconImageVector != null && iconPosition == IconPosition.End) {
+            HorizontalSpacer(width = 8.dp)
+            Icon(imageVector = iconImageVector, contentDescription = text)
+        }
     }
 }
 
@@ -48,15 +60,21 @@ fun FilledTonalButton(
     text: String,
     modifier: Modifier = Modifier,
     iconImageVector: ImageVector? = null,
+    iconPosition: IconPosition = IconPosition.Start,
 ) {
     FilledTonalButton(
         onClick = onClick,
         modifier = modifier,
     ) {
-        if (iconImageVector != null) {
+        if (iconImageVector != null && iconPosition == IconPosition.Start) {
             Icon(imageVector = iconImageVector, contentDescription = text)
+            HorizontalSpacer(width = 8.dp)
         }
         Text(text = text)
+        if (iconImageVector != null && iconPosition == IconPosition.End) {
+            HorizontalSpacer(width = 8.dp)
+            Icon(imageVector = iconImageVector, contentDescription = text)
+        }
     }
 }
 
@@ -66,16 +84,21 @@ fun OutlinedButton(
     text: String,
     modifier: Modifier = Modifier,
     iconImageVector: ImageVector? = null,
+    iconPosition: IconPosition = IconPosition.Start,
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier,
     ) {
-        if (iconImageVector != null) {
+        if (iconImageVector != null && iconPosition == IconPosition.Start) {
             Icon(imageVector = iconImageVector, contentDescription = text)
             HorizontalSpacer(width = 8.dp)
         }
         Text(text = text)
+        if (iconImageVector != null && iconPosition == IconPosition.End) {
+            HorizontalSpacer(width = 8.dp)
+            Icon(imageVector = iconImageVector, contentDescription = text)
+        }
     }
 }
 

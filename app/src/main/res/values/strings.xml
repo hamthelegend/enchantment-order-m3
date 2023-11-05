@@ -18,6 +18,7 @@
     <string name="select_defaults">Select defaults</string>
     <string name="target">Target</string>
     <string name="add_initial_enchantments">Add initial enchantments</string>
+    <string name="skip">Skip</string>
     <string name="done">Done</string>
     <string name="choose_books">Choose your books</string>
     <string name="custom_books">Custom books</string>
@@ -51,4 +52,6 @@
     </string>
     <string name="remove_ads">Remove ads</string>
     <string name="loading_ad">Loading ad…</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>

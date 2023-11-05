@@ -9,19 +9,22 @@ import androidx.compose.ui.graphics.vector.ImageVector
 @Composable
 fun ExtendedFloatingActionButton(
     onClick: () -> Unit,
+    iconImageVector: ImageVector,
     text: String,
     modifier: Modifier = Modifier,
-    iconImageVector: ImageVector? = null,
+    expanded: Boolean = true,
+    containerColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+    contentColor: Color = contentColorFor(containerColor),
 ) {
     ExtendedFloatingActionButton(
+        icon = { Icon(imageVector = iconImageVector, contentDescription = text) },
+        text = { Text(text = text) },
         onClick = onClick,
         modifier = modifier,
-    ) {
-        if (iconImageVector != null) {
-            Icon(imageVector = iconImageVector, contentDescription = text)
-        }
-        Text(text = text)
-    }
+        containerColor = containerColor,
+        contentColor = contentColor,
+        expanded = expanded,
+    )
 }
 
 @Composable
